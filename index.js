@@ -1,14 +1,21 @@
-const point = document.querySelector(".point")
+const shadowContainer = document.querySelector(".shadow")
+const RealShadow = document.querySelector(".real-shadow")
+const userHeight = 200
+let morning = new Date(2020,6,13,14,0,0,0)
 
 
-let morning = new Date(2020,6,13,10,0,0,0)
-let sunPosition = SunCalc.getPosition(new Date() , 30,30)
+function getShadow(coord ,  time=new Date()){
+  const  {azimuth , altitude} = SunCalc.getPosition(time , coord.x,coord.y)
+  const shadowLenth = userHeight * Math.cos(altitude)
+  return{shadowLenth,azimuth}
+}
 
-point.style.transform=`rotate(${sunPosition.altitude}rad)`
+function drawShadow(coord ,time){
+  const  {shadowLenth , azimuth}=getShadow(coord,time)
+  shadowContainer.style.transform=`rotate(${azimuth }rad)`
+  RealShadow.style.height = `${shadowLenth}px`
 
-console.log(sunPosition)
-console.log( sunPosition.azimuth*180/Math.PI)
-console.log( sunPosition.altitude*180/Math.PI)
+}
 
 function getLocation() {
   return new Promise((resovle, reject) => {
@@ -24,4 +31,7 @@ function getLocation() {
   });
 }
 
-getLocation().then(loc => console.log(loc));
+getLocation().then(loc => {
+  drawShadow(loc , morning)  
+  console.log(loc)
+});
