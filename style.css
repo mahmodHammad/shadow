@@ -7,3 +7,26 @@ body {
   text-align: center;
   margin: 40px;
 }
+
+.view{
+  border: 1px solid #777;
+  border-radius: 50%;
+  background-color: #fff2;
+  margin: auto;
+  width: 400px;
+  height: 400px;
+  position: relative;
+}
+
+.view .point {
+  height: 200px;
+  width: 20px;
+  border: #ccc;
+  background-color: #999;
+  border-radius: 4px;
+  position: relative;
+  /* top: 50%; */
+  left: calc(50% - 10px) ;
+  transform-origin: bottom center ;
+  transform: rotate(6.26rad);
+}

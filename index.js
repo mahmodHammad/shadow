@@ -1,12 +1,14 @@
-/*
-1- get coordinates [X]
-2- calculate dirction ****************
-3- display the shadow in the ui as 2D
-4- display the shadow in the ui as 3D
-*/
-let post = SunCalc.getPosition(new Date() , 30,30)
-console.log(post)
+const point = document.querySelector(".point")
 
+
+let morning = new Date(2020,6,13,10,0,0,0)
+let sunPosition = SunCalc.getPosition(new Date() , 30,30)
+
+point.style.transform=`rotate(${sunPosition.altitude}rad)`
+
+console.log(sunPosition)
+console.log( sunPosition.azimuth*180/Math.PI)
+console.log( sunPosition.altitude*180/Math.PI)
 
 function getLocation() {
   return new Promise((resovle, reject) => {
