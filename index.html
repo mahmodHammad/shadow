@@ -8,7 +8,6 @@
   </head>
   <body>
     <div class="root">
-
       <!-- Header-------------------------------- start-->
       <div class="header">
         <h2>
@@ -38,18 +37,19 @@
         <time class="time"> test</time> <button class="reset">reset</button>
         <br />
         <div class="slider-container">
-          Time:
+          Time: &nbsp; 
           <input
             type="range"
-            min="1"
+            min="0"
             max="24"
             Z
             step="0.1"
             class="slider slider-h"
           />
+          <span class="timeLable"></span>
         </div>
         <div class="slider-container">
-          Day :
+          Day:&nbsp; &nbsp;&nbsp; 
           <input
             type="range"
             min="1"
@@ -57,16 +57,18 @@
             value="1"
             class="slider slider-d"
           />
+          <span class="dayLable"></span>
         </div>
         <div class="slider-container">
           Month:
           <input
             type="range"
-            min="1"
-            max="12"
+            min="0"
+            max="11"
             value="1"
             class="slider slider-m"
           />
+          <span class="monthLable"></span>
         </div>
 
         <div class="slider-container">
@@ -78,10 +80,10 @@
             value="1"
             class="slider slider-andgle"
           />
+          <span class="rotateLable"></span>
         </div>
       </div>
       <!-- Controllers-------------------------------- end-->
-
     </div>
   </body>
 

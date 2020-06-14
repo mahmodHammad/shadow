@@ -7,6 +7,11 @@ const monthSlider = document.querySelector(".slider-m");
 const angleSlider = document.querySelector(".slider-andgle");
 const reset = document.querySelector(".reset");
 
+const rotateLable = document.querySelector(".rotateLable");
+const monthLable = document.querySelector(".monthLable");
+const dayLable = document.querySelector(".dayLable");
+const timeLable = document.querySelector(".timeLable");
+
 // const sens = document.querySelector(".sensor");
 
 const timeUI = document.querySelector(".time");
@@ -26,6 +31,7 @@ hSlider.oninput = function() {
   const time = this.value;
   const minutes = Math.ceil((time % 2) * 60);
   const hours = Math.floor(time);
+  timeLable.innerHTML=`${hours}`
   morning.setMinutes(minutes);
   morning.setHours(hours);
   updateTime();
@@ -33,23 +39,26 @@ hSlider.oninput = function() {
 
 daySlider.oninput = function() {
   const day = this.value;
+  dayLable.innerHTML=day
   morning.setDate(day);
   updateTime();
 };
 
 monthSlider.oninput = function() {
   const month = this.value;
+  monthLable.innerHTML=Number(month)+1
   morning.setMonth(month);
   updateTime();
 };
 
-function rotateboard(angle){
+function rotateboard(angle) {
+  rotateLable.innerHTML = `${angle}`;
   board.style.transform = `rotate(${angle}deg)`;
 }
 
 angleSlider.oninput = function() {
   const angle = this.value;
-  rotateboard(angle)
+  rotateboard(angle);
 };
 // TimeSliders |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
 // TimeSliders |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
@@ -100,13 +109,20 @@ function useLocation() {
 }
 // Location|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
 // Location|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
+
 function initSliders() {
   const currentMonth = morning.getMonth();
   const currentDay = morning.getDate();
   const currentHoure = morning.getHours();
+
   monthSlider.value = currentMonth;
   daySlider.value = currentDay;
   hSlider.value = currentHoure;
+
+  rotateLable.innerHTML = "0";
+  monthLable.innerHTML = currentMonth;
+  dayLable.innerHTML = currentDay;
+  timeLable.innerHTML = currentHoure;
 }
 
 function init() {
@@ -117,29 +133,29 @@ function init() {
 init();
 
 window.addEventListener("deviceorientation", e => {
-  board.style.transform = `rotate(${Math.ceil(e.alpha)}deg)`;  
-  // sens.innerHTML = ` x:${e.isTrusted}, y:${e.beta}, z:${e.gamma}`;
+  const angle = Math.ceil(e.alpha);
+  rotateboard(angle);
 });
 
-function resetTime(){
-  const now = new Date()
+function resetTime() {
+  const now = new Date();
   const currentMonth = now.getMonth();
   const currentDay = now.getDate();
   const currentHoure = now.getHours();
-  morning.setMonth(currentMonth)
-  morning.setDate(currentDay)
-  morning.setHours(currentHoure)
+
+  morning.setMonth(currentMonth);
+  morning.setDate(currentDay);
+  morning.setHours(currentHoure);
 
   monthSlider.value = currentMonth;
   daySlider.value = currentDay;
   hSlider.value = currentHoure;
-  angleSlider.value=0
+  angleSlider.value = 0;
   useLocation();
   updateTime();
-  rotateboard(0)
+  rotateboard(0);
 }
 
-reset.addEventListener("click" , ()=>{
-  console.log("resetttt")
-  resetTime()
-})
+reset.addEventListener("click", () => {
+  resetTime();
+});
