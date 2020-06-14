@@ -109,42 +109,10 @@ function init() {
   useLocation();
 }
 init();
-sens.innerHTML ="Hiiiiiiiiiii"
+
 window.addEventListener("deviceorientation", e => {
-  console.log(e);
+  console.log(e.alpha);
+  board.style.transform = `rotate(${e.alpha}deg)`;
   
   sens.innerHTML = ` x:${e.isTrusted}, y:${e.beta}, z:${e.gamma}`;
 });
-window.addEventListener("devicemotion",e=>{
-  console.log(e);
-  
-  // sens.innerHTML = ` x:${e.isTrusted}, y:${e.beta}, z:${e.gamma}`;
-})
-// function initSensor() {
-//   let sensor = new Gyroscope();
-//   sensor.start();
-//   sens.innerHTML = "start Reading"
-//   sensor.onreading = () => {
-//       sens.innerHTML = ` x:${sensor.x}, y:${sensor.y}, z:${sensor.z}`
-//       console.log("Angular velocity around the X-axis " + sensor.x);
-//       console.log("Angular velocity around the Y-axis " + sensor.y);
-//       console.log("Angular velocity around the Z-axis " + sensor.z);
-//   };
-
-//   sensor.onerror = event => console.log(event.error.name, event.error.message);
-// }
-// initSensor();
-
-window.addEventListener('devicemotion',(e)=>alert(e.rotationRate))
-
-
-let acl = new Accelerometer({frequency: 60});
-
-acl.addEventListener('reading', () => {
-  alert("i'am reading")
-  console.log("Acceleration along the X-axis " + acl.x);
-  console.log("Acceleration along the Y-axis " + acl.y);
-  console.log("Acceleration along the Z-axis " + acl.z);
-});
-
-acl.start();
