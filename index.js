@@ -1,8 +1,11 @@
+const board = document.querySelector(".view");
 const shadowContainer = document.querySelector(".shadow");
 const RealShadow = document.querySelector(".real-shadow");
 const hSlider = document.querySelector(".slider-h");
 const daySlider = document.querySelector(".slider-d");
 const monthSlider = document.querySelector(".slider-m");
+const angleSlider = document.querySelector(".slider-andgle");
+
 const timeUI = document.querySelector(".time");
 
 const userHeight = 150; //use it for calculating shadow lenght
@@ -36,6 +39,12 @@ monthSlider.oninput = function() {
   morning.setMonth(month);
   updateTime();
 };
+
+angleSlider.oninput=function(){
+  const angle = this.value;
+  board.style.transform = `rotate(${angle}deg)`;
+
+}
 // TimeSliders |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
 // TimeSliders |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
 
