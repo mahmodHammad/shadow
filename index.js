@@ -6,6 +6,8 @@ const daySlider = document.querySelector(".slider-d");
 const monthSlider = document.querySelector(".slider-m");
 const angleSlider = document.querySelector(".slider-andgle");
 
+const sens = document.querySelector(".sensor");
+
 const timeUI = document.querySelector(".time");
 
 const userHeight = 150; //use it for calculating shadow lenght
@@ -40,11 +42,10 @@ monthSlider.oninput = function() {
   updateTime();
 };
 
-angleSlider.oninput=function(){
+angleSlider.oninput = function() {
   const angle = this.value;
   board.style.transform = `rotate(${angle}deg)`;
-
-}
+};
 // TimeSliders |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
 // TimeSliders |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
 
@@ -94,7 +95,7 @@ function useLocation() {
 }
 // Location|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
 // Location|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
-function initSliders(){
+function initSliders() {
   const currentMonth = morning.getMonth();
   const currentDay = morning.getDate();
   const currentHoure = morning.getHours();
@@ -103,8 +104,23 @@ function initSliders(){
   hSlider.value = currentHoure;
 }
 function init() {
-  initSliders()
+  initSliders();
   updateTime();
   useLocation();
 }
 init();
+
+function initSensor() {
+  let sensor = new Gyroscope();
+  sensor.start();
+  sens.innerHTML = "start Reading"
+  sensor.onreading = () => {
+      sens.innerHTML = ` x:${sensor.x}, y:${sensor.y}, z:${sensor.z}`
+      console.log("Angular velocity around the X-axis " + sensor.x);
+      console.log("Angular velocity around the Y-axis " + sensor.y);
+      console.log("Angular velocity around the Z-axis " + sensor.z);
+  };
+  
+  sensor.onerror = event => console.log(event.error.name, event.error.message);
+}
+initSensor();
