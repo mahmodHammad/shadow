@@ -1,4 +1,6 @@
-
+html {
+  overflow-x: hidden;
+}
 body {
   background-color: #222;
   color: #eee;
@@ -7,7 +9,7 @@ body {
 
 .header {
   text-align: center;
-  margin: 40px 0 ;
+  margin: 20px 0 30px;
 }
 
 .view {
@@ -19,7 +21,7 @@ body {
   height: 300px;
   position: relative;
 }
-.pole{
+.pole {
   position: absolute;
   left: calc(50% - 5px);
   color: darkgoldenrod;
@@ -48,17 +50,18 @@ body {
   height: 200px;
   width: 20px;
   left: calc(50% - 10px);
-  top:calc(50% - 30px);
+  top: calc(50% - 30px);
   transform-origin: top center;
 }
-.real-shadow{
+
+.real-shadow {
   background-color: #0008;
   width: 100%;
   height: 100px;
   border-radius: 50px;
 }
 
-.reset{
+.reset {
   margin: 0 10px;
   padding: 3px 18px;
   border-radius: 50px;
@@ -66,26 +69,25 @@ body {
   background-color: #eee;
 }
 /* controllers ----------------------->start */
-.controller{
-  margin: 60px 20px;
+.controller {
+  margin: 30px 0px;
   text-align: center;
 }
 
-.slider-container{
- margin: 15px 0px;
- text-align: center;
+.slider-container {
+  margin: 15px 0px;
+  text-align: center;
 }
 .slider {
   -webkit-appearance: none;
-  width: 85%;
+  width: 86%;
   height: 25px;
   background: #f5f5f5;
   outline: none;
   opacity: 0.7;
-  -webkit-transition: .2s;
-  transition: opacity .2s;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
   border-radius: 4px;
-
 }
 
 .slider:hover {
@@ -105,6 +107,16 @@ body {
 .slider::-moz-range-thumb {
   width: 25px;
   height: 25px;
-  background: #4CAF50;
+  background: #4caf50;
   cursor: pointer;
+}
+
+
+@media (max-width: 450px) {
+ .slider-container{
+   text-align: right;
+ }
+  .slider{
+   width: 80%;
+ } 
 }
