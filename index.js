@@ -1,13 +1,15 @@
 const shadowContainer = document.querySelector(".shadow");
 const RealShadow = document.querySelector(".real-shadow");
 const hSlider = document.querySelector(".slider-h");
+const daySlider = document.querySelector(".slider-d");
+const monthSlider = document.querySelector(".slider-m");
 const timeUI = document.querySelector(".time");
 
-const userHeight = 200; //use it for calculating shadow lenght
+const userHeight = 150; //use it for calculating shadow lenght
 let morning = new Date();
 
-// TimeSlider |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->START-
-// TimeSlider |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->START-
+// TimeSliders |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->START-
+// TimeSliders |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->START-
 function updateTime() {
   drawShadow({ x: 30, y: 30 }, morning);
   timeUI.setAttribute("datetime", morning);
@@ -18,17 +20,24 @@ hSlider.oninput = function() {
   const time = this.value;
   const minutes = Math.ceil((time % 2) * 60);
   const hours = Math.floor(time);
-  console.log("time", time);
-  console.log("hours", hours);
-  Math.ceil((2.3 % 2) * 60);
   morning.setMinutes(minutes);
   morning.setHours(hours);
-  console.log("morning", morning);
-
   updateTime();
 };
-// TimeSlider |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
-// TimeSlider |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
+
+daySlider.oninput = function() {
+  const day = this.value;
+  morning.setDate(day);
+  updateTime();
+};
+
+monthSlider.oninput = function() {
+  const month = this.value;
+  morning.setMonth(month);
+  updateTime();
+};
+// TimeSliders |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
+// TimeSliders |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
 
 // Shadow |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->START-
 // Shadow |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->START-
@@ -65,8 +74,6 @@ function getLocation() {
 function useLocation() {
   getLocation()
     .then(loc => {
-      const currentHoure = morning.getHours();
-      hSlider.value = currentHoure;
       drawShadow(loc, morning);
     })
     .catch(err => {
@@ -78,8 +85,16 @@ function useLocation() {
 }
 // Location|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
 // Location|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
-
+function initSliders(){
+  const currentMonth = morning.getMonth();
+  const currentDay = morning.getDate();
+  const currentHoure = morning.getHours();
+  monthSlider.value = currentMonth;
+  daySlider.value = currentDay;
+  hSlider.value = currentHoure;
+}
 function init() {
+  initSliders()
   updateTime();
   useLocation();
 }
