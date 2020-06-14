@@ -1,33 +1,37 @@
 const shadowContainer = document.querySelector(".shadow");
 const RealShadow = document.querySelector(".real-shadow");
 const hSlider = document.querySelector(".slider-h");
-const mSlider = document.querySelector(".slider-m");
 const timeUI = document.querySelector(".time");
 
 const userHeight = 200; //use it for calculating shadow lenght
 let morning = new Date();
 
-// Slider ------------------------------------->START
-// Slider ------------------------------------->START
+// TimeSlider |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->START-
+// TimeSlider |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->START-
 function updateTime() {
   drawShadow({ x: 30, y: 30 }, morning);
-  timeUI.innerHTML = morning;
+  timeUI.setAttribute("datetime", morning);
+  timeUI.innerHTML = String(morning).split("GMT")[0];
 }
 
 hSlider.oninput = function() {
-  morning.setHours(this.value);
+  const time = this.value;
+  const minutes = Math.ceil((time % 2) * 60);
+  const hours = Math.floor(time);
+  console.log("time", time);
+  console.log("hours", hours);
+  Math.ceil((2.3 % 2) * 60);
+  morning.setMinutes(minutes);
+  morning.setHours(hours);
+  console.log("morning", morning);
+
   updateTime();
 };
+// TimeSlider |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
+// TimeSlider |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
 
-mSlider.oninput = function() {
-  morning.setMinutes(this.value);
-  updateTime();
-};
-// Slider ------------------------------------->END
-// Slider ------------------------------------->END
-
-// Shadow ------------------------------------->START
-// Shadow ------------------------------------->START
+// Shadow |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->START-
+// Shadow |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->START-
 function getShadow(coord, time = new Date()) {
   const { azimuth, altitude } = SunCalc.getPosition(time, coord.x, coord.y);
   const shadowLenth = userHeight * Math.cos(altitude);
@@ -39,11 +43,11 @@ function drawShadow(coord, time) {
   shadowContainer.style.transform = `rotate(${azimuth}rad)`;
   RealShadow.style.height = `${shadowLenth}px`;
 }
-// Shadow ------------------------------------->END
-// Shadow ------------------------------------->END
+// Shadow |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
+// Shadow |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
 
-// Location ------------------------------------->START
-// Location ------------------------------------->START
+// Location |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->START-
+// Location |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->START-
 function getLocation() {
   return new Promise((resovle, reject) => {
     let coord = {};
@@ -62,9 +66,7 @@ function useLocation() {
   getLocation()
     .then(loc => {
       const currentHoure = morning.getHours();
-      const currentMinute = morning.getMinutes();
       hSlider.value = currentHoure;
-      mSlider.value = currentMinute;
       drawShadow(loc, morning);
     })
     .catch(err => {
@@ -74,12 +76,11 @@ function useLocation() {
       drawShadow({ x: 30, y: 30 }, morning);
     });
 }
-// Location ------------------------------------->END
-// Location ------------------------------------->END
+// Location|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
+// Location|-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
 
 function init() {
-  timeUI.setAttribute("datetime", morning);
-  timeUI.innerHTML = morning;
+  updateTime();
   useLocation();
 }
 init();
