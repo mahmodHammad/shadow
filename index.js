@@ -5,8 +5,9 @@ const hSlider = document.querySelector(".slider-h");
 const daySlider = document.querySelector(".slider-d");
 const monthSlider = document.querySelector(".slider-m");
 const angleSlider = document.querySelector(".slider-andgle");
+const reset = document.querySelector(".reset");
 
-const sens = document.querySelector(".sensor");
+// const sens = document.querySelector(".sensor");
 
 const timeUI = document.querySelector(".time");
 
@@ -42,9 +43,13 @@ monthSlider.oninput = function() {
   updateTime();
 };
 
+function rotateboard(angle){
+  board.style.transform = `rotate(${angle}deg)`;
+}
+
 angleSlider.oninput = function() {
   const angle = this.value;
-  board.style.transform = `rotate(${angle}deg)`;
+  rotateboard(angle)
 };
 // TimeSliders |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
 // TimeSliders |-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_->END-
@@ -103,6 +108,7 @@ function initSliders() {
   daySlider.value = currentDay;
   hSlider.value = currentHoure;
 }
+
 function init() {
   initSliders();
   updateTime();
@@ -111,8 +117,29 @@ function init() {
 init();
 
 window.addEventListener("deviceorientation", e => {
-  console.log(e.alpha);
-  board.style.transform = `rotate(${e.alpha}deg)`;
-  
-  sens.innerHTML = ` x:${e.isTrusted}, y:${e.beta}, z:${e.gamma}`;
+  board.style.transform = `rotate(${Math.ceil(e.alpha)}deg)`;  
+  // sens.innerHTML = ` x:${e.isTrusted}, y:${e.beta}, z:${e.gamma}`;
 });
+
+function resetTime(){
+  const now = new Date()
+  const currentMonth = now.getMonth();
+  const currentDay = now.getDate();
+  const currentHoure = now.getHours();
+  morning.setMonth(currentMonth)
+  morning.setDate(currentDay)
+  morning.setHours(currentHoure)
+
+  monthSlider.value = currentMonth;
+  daySlider.value = currentDay;
+  hSlider.value = currentHoure;
+  angleSlider.value=0
+  useLocation();
+  updateTime();
+  rotateboard(0)
+}
+
+reset.addEventListener("click" , ()=>{
+  console.log("resetttt")
+  resetTime()
+})
