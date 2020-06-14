@@ -50,11 +50,15 @@ body {
 
 .controller{
   margin: 120px 20px;
+  text-align: center;
 }
 
+.slider-container{
+ margin: 15px;
+}
 .slider {
   -webkit-appearance: none;
-  width: 100%;
+  width: 90%;
   height: 25px;
   background: #d3d3d3;
   outline: none;

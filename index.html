@@ -10,25 +10,44 @@
     <div class="root">
       <div class="header">
         <h1>
-          Top view of my shadow 
+          Top view of my shadow
         </h1>
         <h1>N</h1>
       </div>
       <div class="view">
-        <div class="point user">
-          
-        </div>
+        <div class="point user"></div>
         <div class="shadow point ">
           <div class="real-shadow"></div>
         </div>
       </div>
 
       <div class="controller">
-        <input type="range" min="1" max="24" value="1" class="slider">
+        <time class="time"> test</time>
+        <br />
+        <div class="slider-container">
+          H:
+          <input
+            type="range"
+            min="1"
+            max="24"
+            value="1"
+            class="slider slider-h"
+          />
+        </div>
+        <div class="slider-container">
+          M:
+          <input
+            type="range"
+            min="1"
+            max="59"
+            value="1"
+            class="slider slider-m"
+          />
+        </div>
       </div>
     </div>
   </body>
 
-  <script src="./suncalc.js"  ></script>
-  <script src="./index.js"  ></script>
+  <script src="./suncalc.js"></script>
+  <script src="./index.js"></script>
 </html>
