@@ -1,8 +1,8 @@
-function createCoord(x, y, z, col) {
+function createCoord(x, y, z, color) {
     const points = [];
     points.push(new THREE.Vector3(-10 * x, -10 * y, -10 * z));
     points.push(new THREE.Vector3(10 * x, 10 * y, 10 * z));
-    const material = new THREE.LineBasicMaterial({ color: col });
+    const material = new THREE.LineBasicMaterial({ color });
     const geometry = new THREE.BufferGeometry()
       .setFromPoints(points)
       .scale(5, 2, 13);
@@ -10,5 +10,5 @@ function createCoord(x, y, z, col) {
     scene.add(line);
   }
   createCoord(1, 0, 0, 0xff0000);
-  createCoord(0, 1, 0, 0x00ff00);
-  createCoord(0, 0, 1, 0x0055ff);
+  createCoord(0.1, 1, 0.1, 0x00ff00);
+  createCoord(0, 0.1, 1, 0x0000ff);
