@@ -10,5 +10,5 @@ function createCoord(x, y, z, color) {
     scene.add(line);
   }
   createCoord(1, 0, 0, 0xff0000);
-  createCoord(0.1, 1, 0.1, 0x00ff00);
-  createCoord(0, 0.1, 1, 0x0000ff);
+  createCoord(0, 1, 0, 0x00ff00);
+  createCoord(0, 0, 1, 0x0000ff);

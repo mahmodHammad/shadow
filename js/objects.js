@@ -10,13 +10,14 @@ cube.receiveShadow = false;
 scene.add(cube);
 
 var planeGeometry = new THREE.PlaneBufferGeometry(200, 200, 20, 32);
-planeGeometry.rotateX(90);
+planeGeometry.rotateX(3.14/2);
 planeGeometry.rotateY(0);
 planeGeometry.rotateZ(0);
-var planeMaterial = new THREE.MeshStandardMaterial({
+var planeMaterial = new THREE.MeshBasicMaterial({
   color: 0xffffff,
   side: THREE.DoubleSide
 });
 var plane = new THREE.Mesh(planeGeometry, planeMaterial);
 plane.receiveShadow = true;
 scene.add(plane);
+ 
