@@ -19,6 +19,7 @@
   "homepage": "https://github.com/mahmodHammad/shadow#readme",
   "dependencies": {
     "lite-server": "^2.5.4",
-    "suncalc": "^1.8.0"
+    "suncalc": "^1.8.0",
+    "three": "^0.117.1"
   }
 }
