@@ -1,23 +1,30 @@
-function createCube() {
-  const geometry = new THREE.CylinderGeometry(1, 1, 10, 100);
-  const material = new THREE.MeshStandardMaterial({ color: 0xffff88 });
-  const cube = new THREE.Mesh(geometry, material);
-  cube.castShadow = true; //default is false
-  cube.receiveShadow = true;
-  return cube;
+function createCylender(
+  x = 0,
+  y = 0,
+  z = 0,
+  br = 1,
+  tr = 1.5,
+  color = 0xffdf00
+) {
+  const geometry = new THREE.CylinderGeometry(tr, br, 10, 100);
+  const material = new THREE.MeshStandardMaterial({ color });
+  const cylender = new THREE.Mesh(geometry, material);
+  cylender.castShadow = true; //default is false
+  cylender.receiveShadow = true;
+  cylender.translateX(x);
+  cylender.translateY(5 + y);
+  cylender.translateZ(z);
+  scene.add(cylender);
+  return cylender;
 }
-const cube = createCube();
 
-scene.add(cube);
-
-var planeGeometry = new THREE.PlaneBufferGeometry(200, 200, 20, 32);
-planeGeometry.rotateX(3.14 / 2);
-planeGeometry.rotateY(0);
-planeGeometry.rotateZ(0);
-var planeMaterial = new THREE.MeshStandardMaterial({
-  color: 0xffffff,
-  side: THREE.DoubleSide
-});
-var plane = new THREE.Mesh(planeGeometry, planeMaterial);
-plane.receiveShadow = true;
-scene.add(plane);
+createCylender(-5, 0, 0);
+createCylender(0, 0, 5, 0.1, 2, 0xc0c0c0);
+createCylender(0, 0, 10, 0.1, 2, 0xc0c0c0);
+createCylender(-5, 0, 15);
+createCylender(10, 0, 5, 0.1, 2, 0xc0c0c0);
+createCylender(10, 0, 10, 0.1, 2, 0xc0c0c0);
+createCylender(5, 0, 5, 0.1, 2, 0xc0c0c0);
+createCylender(5, 0, 10, 0.1, 2, 0xc0c0c0);
+createCylender(15, 0, 0);
+createCylender(15, 0, 15);

@@ -9,6 +9,20 @@ function createCoord(x, y, z, color) {
   const line = new THREE.Line(geometry, material);
   scene.add(line);
 }
-createCoord(1, 0, 0, 0xff0000);
-createCoord(0, 1, 0, 0x00ff00);
-createCoord(0, 0, 1, 0x0000ff);
+
+function displayCoards() {
+  createCoord(1, 0, 0, 0xff0000);
+  createCoord(0, 1, 0, 0x00ff00);
+  createCoord(0, 0, 1, 0x0000ff);
+}
+
+// XY plane
+const planeGeometry = new THREE.PlaneBufferGeometry(200, 200, 20, 32);
+planeGeometry.rotateX(3.14 / 2);
+const planeMaterial = new THREE.MeshStandardMaterial({
+  color: 0xffffff,
+  side: THREE.DoubleSide
+});
+const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+plane.receiveShadow = true;
+scene.add(plane);
