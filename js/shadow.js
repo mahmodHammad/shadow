@@ -2,7 +2,8 @@
 const illumination = new THREE.AmbientLight(0x101010);
 scene.add(illumination);
 
-const light = new THREE.PointLight(0xffffee, 1, 100, 2);
+// sun
+const light = new THREE.PointLight(0xffffee, 1, 100, 3);
 light.position.set(5, 20, 7.5);
 light.castShadow = true;
 
@@ -12,6 +13,15 @@ light.shadow.camera.near = 0.5; // default
 light.shadow.camera.far = 500; // default
 
 scene.add(light);
+
+
+
+const sun = new THREE.PointLight(0xffffee, 0.5, 100, 1);
+sun.position.set(5, 20, 7.5);
+sun.castShadow = true;
+scene.add(sun);
+
+
 
 //Create a helper for the shadow camera (optional)
 function displayLightHelper() {
