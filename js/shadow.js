@@ -1,4 +1,8 @@
-var light = new THREE.PointLight(0xffffee, 1, 100, 2);
+//  illuminate all objects in the scene equally.
+const illumination = new THREE.AmbientLight(0x101010);
+scene.add(illumination);
+
+const light = new THREE.PointLight(0xffffee, 1, 100, 2);
 light.position.set(5, 20, 7.5);
 light.castShadow = true;
 
