@@ -5,7 +5,10 @@ var camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.z = 15;
+camera.position.z = 30;
+camera.position.x = 30;
+camera.position.y = 30;
+
 
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -26,3 +29,9 @@ function onWindowResize() {
 }
 
 window.addEventListener("resize", onWindowResize, false);
+
+
+var params = {
+  sunPostion: true,
+  rodHeight:200,
+};
