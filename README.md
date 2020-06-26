@@ -1,8 +1,9 @@
 # shadow
-determine the direction/length of shadow on a compass
+determine the direction/length of shadow and display it on a compass depending on the position and time! 
 
 - Don't forget to Give the App the location permission
 - for better experience Use it from the phone (for using the Gyroscope sensor to Chase your shadow :P )
+- it's working at night as well, i was lazy to put a condition to fiz that so ignore this issue please 🙂
 
 ### Todo:
 1. get coordinates - [x]
