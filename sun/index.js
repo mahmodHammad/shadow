@@ -6,6 +6,7 @@ import { Sky } from "../node_modules/three/examples/jsm/objects/Sky.js";
 var camera, controls, scene, renderer;
 
 var sky, sunSphere;
+var light = new THREE.PointLight(0xffffee, 40, 100, 10);
 
 init();
 render();
@@ -61,6 +62,8 @@ function initSky() {
       uniforms["sunPosition"].value.copy(sunSphere.position);
     }
     calculateSunPosition();
+    const {x,y,z} = sunSphere.position
+    updateLightPosition(light,x,y,z)
 
     renderer.render(scene, camera);
   }
@@ -79,7 +82,7 @@ function initSky() {
   gui.add(effectController, "inclination", 0, 1, 0.0001).onChange(guiChanged);
   gui.add(effectController, "azimuth", 0, 1, 0.0001).onChange(guiChanged);
   gui.add(effectController, "sun").onChange(guiChanged);
-
+  const {x,y,z}=sunSphere.position
   guiChanged();
 }
 
@@ -106,8 +109,11 @@ function init() {
   controls.addEventListener("change", render);
   controls.maxPolarAngle = Math.PI / 2;
 
+
   initSky();
-  createFunery()
+  createFunery();
+  illum();
+  displayPlate();
 
   window.addEventListener("resize", onWindowResize, false);
 }
@@ -158,32 +164,46 @@ function createFunery() {
   createCylender(15, 0, 15);
 }
 
-
-
-function illum(){
-
-//  illuminate all objects in the scene equally.
-const illumination = new THREE.AmbientLight(0x101010);
-scene.add(illumination);
-
-// sun
-const light = new THREE.PointLight(0xffffee, 40, 100, 2);
-light.position.set(45, 95, 7.5);
-light.castShadow = true;
-
-light.shadow.mapSize.width = 512; // default
-light.shadow.mapSize.height = 512; // default
-light.shadow.camera.near = 0.5; // default
-light.shadow.camera.far = 500; // default
-
-scene.add(light);
-
-//Create a helper for the shadow camera (optional)
-function displayLightHelper() {
-  var helper = new THREE.CameraHelper(light.shadow.camera);
-  scene.add(helper);
+function displayPlate() {
+  const planeGeometry = new THREE.PlaneBufferGeometry(10000, 10000, 20, 32);
+  planeGeometry.rotateX(3.14 / 2);
+  const planeMaterial = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    side: THREE.DoubleSide,
+  });
+  const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+  plane.receiveShadow = true;
+  scene.add(plane);
 }
-displayLightHelper()
-// displayCoards()
+
+function illum() {
+  //  illuminate all objects in the scene equally.
+  // const illumination = new THREE.AmbientLight(0x101010);
+  // scene.add(illumination);
+
+  // sun
+  const { x, y, z } = sunSphere.position;
+  console.log(sunSphere.position)
+  light.castShadow = true;
+  updateLightPosition(light,x,y,z)
+
+  light.shadow.mapSize.width = 512; // default
+  light.shadow.mapSize.height = 512; // default
+  light.shadow.camera.near = 0.5; // default
+  light.shadow.camera.far = 500; // default
+
+  scene.add(light);
+
+  //Create a helper for the shadow camera (optional)
+  function displayLightHelper() {
+    var helper = new THREE.CameraHelper(light.shadow.camera);
+    scene.add(helper);
+  }
+  displayLightHelper();
 }
-illum()
+
+
+function updateLightPosition(light,x,y,z){
+  console.log({x,y,z})
+  light.position.set(x/10000, y/10000, z/1000);
+}
