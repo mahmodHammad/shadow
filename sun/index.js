@@ -48,16 +48,19 @@ function initSky() {
     uniforms["mieDirectionalG"].value = effectController.mieDirectionalG;
     uniforms["luminance"].value = effectController.luminance;
 
-    var theta = Math.PI * (effectController.inclination - 0.5);
-    var phi = 2 * Math.PI * (effectController.azimuth - 0.5);
+    function calculateSunPosition() {
+      var theta = Math.PI * (effectController.inclination - 0.5);
+      var phi = 2 * Math.PI * (effectController.azimuth - 0.5);
 
-    sunSphere.position.x = distance * Math.cos(phi);
-    sunSphere.position.y = distance * Math.sin(phi) * Math.sin(theta);
-    sunSphere.position.z = distance * Math.sin(phi) * Math.cos(theta);
+      sunSphere.position.x = distance * Math.cos(phi);
+      sunSphere.position.y = distance * Math.sin(phi) * Math.sin(theta);
+      sunSphere.position.z = distance * Math.sin(phi) * Math.cos(theta);
 
-    sunSphere.visible = effectController.sun;
+      sunSphere.visible = effectController.sun;
 
-    uniforms["sunPosition"].value.copy(sunSphere.position);
+      uniforms["sunPosition"].value.copy(sunSphere.position);
+    }
+    calculateSunPosition();
 
     renderer.render(scene, camera);
   }
@@ -84,10 +87,10 @@ function init() {
   camera = new THREE.PerspectiveCamera(
     60,
     window.innerWidth / window.innerHeight,
-    100,
-    2000000
+    0.1,
+    200000
   );
-  camera.position.set(0, 100, 2000);
+  camera.position.set(10, 50, 100);
 
   scene = new THREE.Scene();
 
@@ -104,6 +107,7 @@ function init() {
   controls.maxPolarAngle = Math.PI / 2;
 
   initSky();
+  createFunery()
 
   window.addEventListener("resize", onWindowResize, false);
 }
@@ -120,3 +124,66 @@ function onWindowResize() {
 function render() {
   renderer.render(scene, camera);
 }
+
+function createCylender(
+  x = 0,
+  y = 0,
+  z = 0,
+  br = 1,
+  tr = 1.5,
+  color = 0xffdf00
+) {
+  const geometry = new THREE.CylinderGeometry(tr, br, 10, 100);
+  const material = new THREE.MeshStandardMaterial({ color });
+  const cylender = new THREE.Mesh(geometry, material);
+  cylender.castShadow = true; //default is false
+  cylender.receiveShadow = true;
+  cylender.translateX(x);
+  cylender.translateY(5 + y);
+  cylender.translateZ(z);
+  scene.add(cylender);
+  return cylender;
+}
+
+function createFunery() {
+  createCylender(-5, 0, 0);
+  createCylender(0, 0, 5, 0.1, 2, 0xc0c0c0);
+  createCylender(0, 0, 10, 0.1, 2, 0xc0c0c0);
+  createCylender(-5, 0, 15);
+  createCylender(10, 0, 5, 0.1, 2, 0xc0c0c0);
+  createCylender(10, 0, 10, 0.1, 2, 0xc0c0c0);
+  createCylender(5, 0, 5, 0.1, 2, 0xc0c0c0);
+  createCylender(5, 0, 10, 0.1, 2, 0xc0c0c0);
+  createCylender(15, 0, 0);
+  createCylender(15, 0, 15);
+}
+
+
+
+function illum(){
+
+//  illuminate all objects in the scene equally.
+const illumination = new THREE.AmbientLight(0x101010);
+scene.add(illumination);
+
+// sun
+const light = new THREE.PointLight(0xffffee, 40, 100, 2);
+light.position.set(45, 95, 7.5);
+light.castShadow = true;
+
+light.shadow.mapSize.width = 512; // default
+light.shadow.mapSize.height = 512; // default
+light.shadow.camera.near = 0.5; // default
+light.shadow.camera.far = 500; // default
+
+scene.add(light);
+
+//Create a helper for the shadow camera (optional)
+function displayLightHelper() {
+  var helper = new THREE.CameraHelper(light.shadow.camera);
+  scene.add(helper);
+}
+displayLightHelper()
+// displayCoards()
+}
+illum()
