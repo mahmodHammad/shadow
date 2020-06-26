@@ -21,5 +21,5 @@ function displayLightHelper() {
   var helper = new THREE.CameraHelper(light.shadow.camera);
   scene.add(helper);
 }
-// displayLightHelper()
-// displayCoards()
+displayLightHelper()
+displayCoards()

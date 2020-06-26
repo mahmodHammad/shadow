@@ -110,10 +110,10 @@ function init() {
   controls.maxPolarAngle = Math.PI / 2;
 
 
+  displayPlate();
   initSky();
   createFunery();
   illum();
-  displayPlate();
 
   window.addEventListener("resize", onWindowResize, false);
 }
@@ -183,7 +183,6 @@ function illum() {
 
   // sun
   const { x, y, z } = sunSphere.position;
-  console.log(sunSphere.position)
   light.castShadow = true;
   updateLightPosition(light,x,y,z)
 
