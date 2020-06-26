@@ -62,8 +62,8 @@ function initSky() {
       uniforms["sunPosition"].value.copy(sunSphere.position);
     }
     calculateSunPosition();
-    const {x,y,z} = sunSphere.position
-    updateLightPosition(light,x,y,z)
+    const { x, y, z } = sunSphere.position;
+    updateLightPosition(light, x, y, z);
 
     renderer.render(scene, camera);
   }
@@ -82,7 +82,7 @@ function initSky() {
   gui.add(effectController, "inclination", 0, 1, 0.0001).onChange(guiChanged);
   gui.add(effectController, "azimuth", 0, 1, 0.0001).onChange(guiChanged);
   gui.add(effectController, "sun").onChange(guiChanged);
-  const {x,y,z}=sunSphere.position
+  const { x, y, z } = sunSphere.position;
   guiChanged();
 }
 
@@ -103,12 +103,14 @@ function init() {
   renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
   document.body.appendChild(renderer.domElement);
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.addEventListener("change", render);
   controls.maxPolarAngle = Math.PI / 2;
-
 
   displayPlate();
   initSky();
@@ -164,6 +166,8 @@ function createFunery() {
   createCylender(15, 0, 15);
 }
 
+//  illuminate all objects in the scene equally.
+
 function displayPlate() {
   const planeGeometry = new THREE.PlaneBufferGeometry(10000, 10000, 20, 32);
   planeGeometry.rotateX(3.14 / 2);
@@ -178,31 +182,16 @@ function displayPlate() {
 
 function illum() {
   //  illuminate all objects in the scene equally.
-  // const illumination = new THREE.AmbientLight(0x101010);
-  // scene.add(illumination);
+  const illumination = new THREE.AmbientLight(0x111111);
+  scene.add(illumination);
 
-  // sun
-  const { x, y, z } = sunSphere.position;
   light.castShadow = true;
-  updateLightPosition(light,x,y,z)
-
-  light.shadow.mapSize.width = 512; // default
-  light.shadow.mapSize.height = 512; // default
-  light.shadow.camera.near = 0.5; // default
-  light.shadow.camera.far = 500; // default
-
   scene.add(light);
 
-  //Create a helper for the shadow camera (optional)
-  function displayLightHelper() {
-    var helper = new THREE.CameraHelper(light.shadow.camera);
-    scene.add(helper);
-  }
-  displayLightHelper();
+  const { x, y, z } = sunSphere.position;
+  updateLightPosition(light, x, y, z);
 }
 
-
-function updateLightPosition(light,x,y,z){
-  console.log({x,y,z})
-  light.position.set(x/10000, y/10000, z/1000);
+function updateLightPosition(light, x, y, z) {
+  light.position.set(x / 10000, y / 10000, z / 1000);
 }
