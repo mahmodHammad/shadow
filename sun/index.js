@@ -1,6 +1,6 @@
-// change those urls to work on production 
+// change those urls to work on production
 import { GUI } from "../node_modules/three/examples/jsm/libs/dat.gui.module.js";
-import { OrbitControls } from "../node_modules/three/examples/jsm/controls/";
+import { OrbitControls } from "../node_modules/three/examples/jsm/controls/OrbitControls.js";
 import { Sky } from "../node_modules/three/examples/jsm/objects/Sky.js";
 
 var camera, controls, scene, renderer;
@@ -35,7 +35,7 @@ function initSky() {
     luminance: 1,
     inclination: 0.49, // elevation / inclination
     azimuth: 0.25, // Facing front,
-    sun: !true
+    sun: !true,
   };
 
   var distance = 400000;
@@ -64,9 +64,7 @@ function initSky() {
 
   var gui = new GUI();
 
-  gui
-    .add(effectController, "turbidity", 1.0, 20.0, 0.1)
-    .onChange(guiChanged);
+  gui.add(effectController, "turbidity", 1.0, 20.0, 0.1).onChange(guiChanged);
   gui.add(effectController, "rayleigh", 0.0, 4, 0.001).onChange(guiChanged);
   gui
     .add(effectController, "mieCoefficient", 0.0, 0.1, 0.001)
@@ -75,9 +73,7 @@ function initSky() {
     .add(effectController, "mieDirectionalG", 0.0, 1, 0.001)
     .onChange(guiChanged);
   gui.add(effectController, "luminance", 0.0, 2).onChange(guiChanged);
-  gui
-    .add(effectController, "inclination", 0, 1, 0.0001)
-    .onChange(guiChanged);
+  gui.add(effectController, "inclination", 0, 1, 0.0001).onChange(guiChanged);
   gui.add(effectController, "azimuth", 0, 1, 0.0001).onChange(guiChanged);
   gui.add(effectController, "sun").onChange(guiChanged);
 
@@ -105,9 +101,7 @@ function init() {
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.addEventListener("change", render);
-  //controls.maxPolarAngle = Math.PI / 2;
-  controls.enableZoom = false;
-  controls.enablePan = false;
+  controls.maxPolarAngle = Math.PI / 2;
 
   initSky();
 
