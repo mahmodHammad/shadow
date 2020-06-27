@@ -6,7 +6,7 @@ import { Sky } from "../node_modules/three/examples/jsm/objects/Sky.js";
 var camera, controls, scene, renderer;
 
 var sky, sunSphere;
-var light = new THREE.PointLight(0xffffee, 40, 100, 10);
+var light = new THREE.PointLight(0xffffee, 80, 100, 20);
 
 init();
 render();
@@ -142,10 +142,10 @@ function createCylender(
   color = 0xffdf00
 ) {
   const geometry = new THREE.CylinderGeometry(tr, br, 10, 100);
-  const material = new THREE.MeshStandardMaterial({ color });
+  const material = new THREE.MeshDepthMaterial({ color });
   const cylender = new THREE.Mesh(geometry, material);
-  cylender.castShadow = true; //default is false
-  cylender.receiveShadow = true;
+  cylender.ShadowMaterial = true; //default is false
+  cylender.receiveShadow = false;
   cylender.translateX(x);
   cylender.translateY(5 + y);
   cylender.translateZ(z);
@@ -154,30 +154,22 @@ function createCylender(
 }
 
 function createFunery() {
-  createCylender(-5, 0, 0);
-  createCylender(0, 0, 5, 0.1, 2, 0xc0c0c0);
-  createCylender(0, 0, 10, 0.1, 2, 0xc0c0c0);
-  createCylender(-5, 0, 15);
-  createCylender(10, 0, 5, 0.1, 2, 0xc0c0c0);
-  createCylender(10, 0, 10, 0.1, 2, 0xc0c0c0);
-  createCylender(5, 0, 5, 0.1, 2, 0xc0c0c0);
-  createCylender(5, 0, 10, 0.1, 2, 0xc0c0c0);
-  createCylender(15, 0, 0);
-  createCylender(15, 0, 15);
+  createCylender(0, 0, 0);
 }
 
 //  illuminate all objects in the scene equally.
 
 function displayPlate() {
-  const planeGeometry = new THREE.PlaneBufferGeometry(10000, 10000, 20, 32);
-  planeGeometry.rotateX(3.14 / 2);
-  const planeMaterial = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    side: THREE.DoubleSide,
-  });
-  const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+  var planeGeometry = new THREE.PlaneBufferGeometry( 2000, 2000 );
+  planeGeometry.rotateX( - Math.PI / 2 );
+  
+  var planeMaterial = new THREE.ShadowMaterial();
+  planeMaterial.opacity = 0.2;
+  
+  var plane = new THREE.Mesh( planeGeometry, planeMaterial );
+  // plane.position.y = -200;
   plane.receiveShadow = true;
-  scene.add(plane);
+  scene.add( plane );
 }
 
 function illum() {
@@ -186,6 +178,8 @@ function illum() {
   scene.add(illumination);
 
   light.castShadow = true;
+  
+light.shadowCameraVisible = true;
   scene.add(light);
 
   const { x, y, z } = sunSphere.position;
@@ -193,5 +187,5 @@ function illum() {
 }
 
 function updateLightPosition(light, x, y, z) {
-  light.position.set(x / 10000, y / 10000, z / 1000);
+  light.position.set(x / 10000, y / 10000, z / 10000);
 }
