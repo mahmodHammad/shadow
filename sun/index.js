@@ -6,8 +6,8 @@ import { Sky } from "../node_modules/three/examples/jsm/objects/Sky.js";
 var camera, controls, scene, renderer;
 
 var sky, sunSphere;
-var light = new THREE.PointLight(0xffffee, 40, 100, 10);
-
+var dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
+          
 init();
 render();
 
@@ -63,7 +63,7 @@ function initSky() {
     }
     calculateSunPosition();
     const { x, y, z } = sunSphere.position;
-    updateLightPosition(light, x, y, z);
+    updateLightPosition(dirLight, x, y, z);
 
     renderer.render(scene, camera);
   }
@@ -174,11 +174,30 @@ function illum() {
   const illumination = new THREE.AmbientLight(0x111111);
   scene.add(illumination);
 
-  light.castShadow = true;
-  scene.add(light);
+
+
+            dirLight.position.set( -1, 0.75, 1 );
+            dirLight.position.multiplyScalar( 50);
+            dirLight.name = "dirlight";
+
+            scene.add( dirLight );
+
+            dirLight.castShadow = true;
+            dirLight.shadowMapWidth = dirLight.shadowMapHeight = 1024*2;
+
+            var d = 220;
+
+            dirLight.shadowCameraLeft = -d;
+            dirLight.shadowCameraRight = d;
+            dirLight.shadowCameraTop = d;
+            dirLight.shadowCameraBottom = -d;
+
+            dirLight.shadowCameraFar = 3500;
+            dirLight.shadowBias = -0.0001;
+            dirLight.shadowDarkness = 0.35;
 
   const { x, y, z } = sunSphere.position;
-  updateLightPosition(light, x, y, z);
+  updateLightPosition(dirLight, x, y, z);
 }
 
 function updateLightPosition(light, x, y, z) {
