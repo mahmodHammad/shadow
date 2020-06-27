@@ -6,8 +6,8 @@ import { Sky } from "../node_modules/three/examples/jsm/objects/Sky.js";
 var camera, controls, scene, renderer;
 
 var sky, sunSphere;
-var dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
-          
+var dirLight = new THREE.DirectionalLight(0xffffbb, 1);
+
 init();
 render();
 
@@ -97,9 +97,6 @@ function init() {
 
   scene = new THREE.Scene();
 
-  var helper = new THREE.GridHelper(10000, 2, 0xffffff, 0xffffff);
-  scene.add(helper);
-
   renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -161,9 +158,9 @@ function createFunery() {
 
 function displayPlate() {
   const planeGeometry = new THREE.PlaneBufferGeometry(2000, 2000);
-  planeGeometry.rotateX(- Math.PI / 2);
+  planeGeometry.rotateX(-Math.PI / 2);
   const planeMaterial = new THREE.ShadowMaterial();
-  planeMaterial.opacity = 0.4;
+  planeMaterial.opacity = 1;
   const plane = new THREE.Mesh(planeGeometry, planeMaterial);
   plane.receiveShadow = true;
   scene.add(plane);
@@ -171,35 +168,33 @@ function displayPlate() {
 
 function illum() {
   //  illuminate all objects in the scene equally.
-  const illumination = new THREE.AmbientLight(0x111111);
+  const illumination = new THREE.AmbientLight(0x1a1a1a);
   scene.add(illumination);
 
+  dirLight.position.set(-1, 0.75, 1);
+  dirLight.position.multiplyScalar(50);
+  dirLight.name = "dirlight";
 
+  scene.add(dirLight);
 
-            dirLight.position.set( -1, 0.75, 1 );
-            dirLight.position.multiplyScalar( 50);
-            dirLight.name = "dirlight";
+  dirLight.castShadow = true;
+  dirLight.shadowMapWidth = dirLight.shadowMapHeight = 1024 * 2;
 
-            scene.add( dirLight );
+  var d = 220;
 
-            dirLight.castShadow = true;
-            dirLight.shadowMapWidth = dirLight.shadowMapHeight = 1024*2;
+  dirLight.shadowCameraLeft = -d;
+  dirLight.shadowCameraRight = d;
+  dirLight.shadowCameraTop = d;
+  dirLight.shadowCameraBottom = -d;
 
-            var d = 220;
-
-            dirLight.shadowCameraLeft = -d;
-            dirLight.shadowCameraRight = d;
-            dirLight.shadowCameraTop = d;
-            dirLight.shadowCameraBottom = -d;
-
-            dirLight.shadowCameraFar = 3500;
-            dirLight.shadowBias = -0.0001;
-            dirLight.shadowDarkness = 0.35;
+  dirLight.shadowCameraFar = 3500;
+  dirLight.shadowBias = -0.0001;
+  dirLight.shadowDarkness = 0.35;
 
   const { x, y, z } = sunSphere.position;
   updateLightPosition(dirLight, x, y, z);
 }
 
 function updateLightPosition(light, x, y, z) {
-  light.position.set(x / 10000, 5, z/10000);
+  light.position.set(x / 10000, y / 10000, z / 10000);
 }
