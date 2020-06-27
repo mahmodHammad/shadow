@@ -160,9 +160,10 @@ function createFunery() {
 //  illuminate all objects in the scene equally.
 
 function displayPlate() {
-  const planeGeometry = new THREE.PlaneBufferGeometry(10000, 10000, 20, 32);
+  const planeGeometry = new THREE.PlaneBufferGeometry(2000, 2000);
   planeGeometry.rotateX(- Math.PI / 2);
   const planeMaterial = new THREE.ShadowMaterial();
+  planeMaterial.opacity = 0.4;
   const plane = new THREE.Mesh(planeGeometry, planeMaterial);
   plane.receiveShadow = true;
   scene.add(plane);
@@ -181,5 +182,5 @@ function illum() {
 }
 
 function updateLightPosition(light, x, y, z) {
-  light.position.set(x / 10000, y / 10000, 5);
+  light.position.set(x / 10000, 5, z/10000);
 }
