@@ -6,7 +6,7 @@ import { Sky } from "../node_modules/three/examples/jsm/objects/Sky.js";
 var camera, controls, scene, renderer;
 
 var sky, sunSphere;
-var light = new THREE.PointLight(0xffffee, 80, 100, 20);
+var light = new THREE.PointLight(0xffffee, 40, 100, 10);
 
 init();
 render();
@@ -139,13 +139,13 @@ function createCylender(
   z = 0,
   br = 1,
   tr = 1.5,
-  color = 0xffdf00
+  color = 0xffffff
 ) {
   const geometry = new THREE.CylinderGeometry(tr, br, 10, 100);
-  const material = new THREE.MeshDepthMaterial({ color });
+  const material = new THREE.MeshStandardMaterial({ color });
   const cylender = new THREE.Mesh(geometry, material);
-  cylender.ShadowMaterial = true; //default is false
-  cylender.receiveShadow = false;
+  cylender.castShadow = true; //default is false
+  cylender.receiveShadow = true;
   cylender.translateX(x);
   cylender.translateY(5 + y);
   cylender.translateZ(z);
@@ -160,16 +160,12 @@ function createFunery() {
 //  illuminate all objects in the scene equally.
 
 function displayPlate() {
-  var planeGeometry = new THREE.PlaneBufferGeometry( 2000, 2000 );
-  planeGeometry.rotateX( - Math.PI / 2 );
-  
-  var planeMaterial = new THREE.ShadowMaterial();
-  planeMaterial.opacity = 0.2;
-  
-  var plane = new THREE.Mesh( planeGeometry, planeMaterial );
-  // plane.position.y = -200;
+  const planeGeometry = new THREE.PlaneBufferGeometry(10000, 10000, 20, 32);
+  planeGeometry.rotateX(- Math.PI / 2);
+  const planeMaterial = new THREE.ShadowMaterial();
+  const plane = new THREE.Mesh(planeGeometry, planeMaterial);
   plane.receiveShadow = true;
-  scene.add( plane );
+  scene.add(plane);
 }
 
 function illum() {
@@ -178,8 +174,6 @@ function illum() {
   scene.add(illumination);
 
   light.castShadow = true;
-  
-light.shadowCameraVisible = true;
   scene.add(light);
 
   const { x, y, z } = sunSphere.position;
@@ -187,5 +181,5 @@ light.shadowCameraVisible = true;
 }
 
 function updateLightPosition(light, x, y, z) {
-  light.position.set(x / 10000, y / 10000, z / 10000);
+  light.position.set(x / 10000, y / 10000, 5);
 }
