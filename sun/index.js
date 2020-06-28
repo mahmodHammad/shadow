@@ -37,18 +37,41 @@ function initSky() {
     inclination: 0.49, // elevation / inclination
     azimuth: 0.25, // Facing front,
     sun: !true,
+    day: 1,
+    hour: 1,
+    day: 1,
+    month: 1,
   };
 
   var distance = 400000;
 
   function guiChanged() {
     var uniforms = sky.material.uniforms;
-    uniforms["turbidity"].value = effectController.turbidity;
-    uniforms["rayleigh"].value = effectController.rayleigh;
-    uniforms["mieCoefficient"].value = effectController.mieCoefficient;
-    uniforms["mieDirectionalG"].value = effectController.mieDirectionalG;
-    uniforms["luminance"].value = effectController.luminance;
+    const {
+      turbidity,
+      rayleigh,
+      mieCoefficient,
+      mieDirectionalG,
+      luminance,
+      month,
+      day,
+      hour,
+    } = effectController;
 
+    uniforms["turbidity"].value = turbidity;
+    uniforms["rayleigh"].value = rayleigh;
+    uniforms["mieCoefficient"].value = mieCoefficient;
+    uniforms["mieDirectionalG"].value = mieDirectionalG;
+    uniforms["luminance"].value = luminance;
+
+    function getSunLocation(userLocation, time) {
+      const changedTime = new Date();
+      changedTime.setHours(Math.floor(hour));
+      changedTime.setMonth(Math.floor(month) - 1);
+      changedTime.setDate(Math.floor(day));
+      console.log(changedTime);
+    }
+    getSunLocation();
     function calculateSunPosition() {
       var theta = Math.PI * (effectController.inclination - 0.5);
       var phi = 2 * Math.PI * (effectController.azimuth - 0.5);
@@ -69,19 +92,17 @@ function initSky() {
   }
 
   var gui = new GUI();
-
-  gui.add(effectController, "turbidity", 1.0, 20.0, 0.1).onChange(guiChanged);
-  gui.add(effectController, "rayleigh", 0.0, 4, 0.001).onChange(guiChanged);
-  gui
-    .add(effectController, "mieCoefficient", 0.0, 0.1, 0.001)
-    .onChange(guiChanged);
-  gui
-    .add(effectController, "mieDirectionalG", 0.0, 1, 0.001)
-    .onChange(guiChanged);
-  gui.add(effectController, "luminance", 0.0, 2).onChange(guiChanged);
+  // gui.add(effectController, "turbidity", 1.0, 20.0, 0.1).onChange(guiChanged);
+  // gui.add(effectController, "rayleigh", 0.0, 4, 0.001).onChange(guiChanged);
+  // gui.add(effectController, "mieCoefficient", 0.0, 0.1, 0.001).onChange(guiChanged);
+  // gui.add(effectController, "mieDirectionalG", 0.0, 1, 0.001).onChange(guiChanged);
+  // gui.add(effectController, "luminance", 0.0, 2).onChange(guiChanged);
+  // gui.add(effectController, "sun").onChange(guiChanged);
   gui.add(effectController, "inclination", 0, 1, 0.0001).onChange(guiChanged);
   gui.add(effectController, "azimuth", 0, 1, 0.0001).onChange(guiChanged);
-  gui.add(effectController, "sun").onChange(guiChanged);
+  gui.add(effectController, "hour", 0, 24, 0.05).onChange(guiChanged);
+  gui.add(effectController, "day", 1, 30, 1).onChange(guiChanged);
+  gui.add(effectController, "month", 1, 12, 1).onChange(guiChanged);
   const { x, y, z } = sunSphere.position;
   guiChanged();
 }
@@ -107,7 +128,7 @@ function init() {
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.addEventListener("change", render);
-  controls.maxPolarAngle = Math.PI / 2;
+  controls.maxPolarAngle = 3.13 / 2;
 
   displayPlate();
   initSky();
