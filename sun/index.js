@@ -50,6 +50,9 @@ function initSky() {
     changedTime.setHours(Math.floor(hour));
     changedTime.setMonth(Math.floor(month) - 1);
     changedTime.setDate(Math.floor(day));
+
+    const minutes = Math.ceil((hour % 2) * 60);
+    changedTime.setMinutes(minutes);
     return changedTime;
   }
 
@@ -72,17 +75,25 @@ function initSky() {
     uniforms["mieDirectionalG"].value = mieDirectionalG;
     uniforms["luminance"].value = luminance;
 
-    function getSunLocation(userLocation, time= new Date()) {
+    function getSunLocation(userLocation, time = new Date()) {
       const Ctime = getTime(hour, day, month);
-      const coord = { x: 31, y: 30.5 };
-      const { azimuth, altitude } = SunCalc.getPosition(time, coord.x, coord.y);
-      console.log("azimuth", azimuth);
-      console.log("altitude", altitude);
+      const coord = { x: 31, y: 30.5 }; // use this location for testing (EGYPT)
+      const { azimuth, altitude } = SunCalc.getPosition(
+        Ctime,
+        coord.x,
+        coord.y
+      );
+      console.log("azimuth", azimuth / (2 * Math.PI));
+      console.log("altitude", altitude / (Math.PI / 2));
+      console.log("-------------------------------------------");
+      return { azimuth, altitude };
     }
-    getSunLocation();
     function calculateSunPosition() {
-      var theta = Math.PI * (effectController.inclination - 0.5);
-      var phi = 2 * Math.PI * (effectController.azimuth - 0.5);
+      const sunPosition = getSunLocation();
+      var theta = Math.PI * sunPosition.altitude;
+      // var theta = Math.PI * (0.01 );
+      // var phi = 2 * Math.PI * (0.01);
+      var phi = 2 * Math.PI * sunPosition.azimuth;
 
       sunSphere.position.x = distance * Math.cos(phi);
       sunSphere.position.y = distance * Math.sin(phi) * Math.sin(theta);
