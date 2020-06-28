@@ -45,6 +45,14 @@ function initSky() {
 
   var distance = 400000;
 
+  function getTime(hour, day, month) {
+    const changedTime = new Date();
+    changedTime.setHours(Math.floor(hour));
+    changedTime.setMonth(Math.floor(month) - 1);
+    changedTime.setDate(Math.floor(day));
+    return changedTime;
+  }
+
   function guiChanged() {
     var uniforms = sky.material.uniforms;
     const {
@@ -64,12 +72,12 @@ function initSky() {
     uniforms["mieDirectionalG"].value = mieDirectionalG;
     uniforms["luminance"].value = luminance;
 
-    function getSunLocation(userLocation, time) {
-      const changedTime = new Date();
-      changedTime.setHours(Math.floor(hour));
-      changedTime.setMonth(Math.floor(month) - 1);
-      changedTime.setDate(Math.floor(day));
-      console.log(changedTime);
+    function getSunLocation(userLocation, time= new Date()) {
+      const Ctime = getTime(hour, day, month);
+      const coord = { x: 31, y: 30.5 };
+      const { azimuth, altitude } = SunCalc.getPosition(time, coord.x, coord.y);
+      console.log("azimuth", azimuth);
+      console.log("altitude", altitude);
     }
     getSunLocation();
     function calculateSunPosition() {
