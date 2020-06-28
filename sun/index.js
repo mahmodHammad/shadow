@@ -37,9 +37,8 @@ function initSky() {
     inclination: 0.49, // elevation / inclination
     azimuth: 0.25, // Facing front,
     sun: !true,
-    day: 1,
-    hour: 1,
-    day: 1,
+    hour: 4,
+    day: 5,
     month: 1,
   };
 
@@ -86,14 +85,12 @@ function initSky() {
       console.log("azimuth", azimuth / (2 * Math.PI));
       console.log("altitude", altitude / (Math.PI / 2));
       console.log("-------------------------------------------");
-      return { azimuth, altitude };
+      return { azimuth: azimuth / (2 * Math.PI), altitude:altitude / (Math.PI / 2) };
     }
     function calculateSunPosition() {
       const sunPosition = getSunLocation();
-      var theta = Math.PI * sunPosition.altitude;
-      // var theta = Math.PI * (0.01 );
-      // var phi = 2 * Math.PI * (0.01);
-      var phi = 2 * Math.PI * sunPosition.azimuth;
+      var theta = (sunPosition.altitude );
+      var phi = (sunPosition.azimuth);
 
       sunSphere.position.x = distance * Math.cos(phi);
       sunSphere.position.y = distance * Math.sin(phi) * Math.sin(theta);
@@ -117,12 +114,11 @@ function initSky() {
   // gui.add(effectController, "mieDirectionalG", 0.0, 1, 0.001).onChange(guiChanged);
   // gui.add(effectController, "luminance", 0.0, 2).onChange(guiChanged);
   // gui.add(effectController, "sun").onChange(guiChanged);
-  gui.add(effectController, "inclination", 0, 1, 0.0001).onChange(guiChanged);
-  gui.add(effectController, "azimuth", 0, 1, 0.0001).onChange(guiChanged);
-  gui.add(effectController, "hour", 0, 24, 0.05).onChange(guiChanged);
+  // gui.add(effectController, "inclination", 0, 1, 0.0001).onChange(guiChanged);
+  // gui.add(effectController, "azimuth", 0, 1, 0.0001).onChange(guiChanged);
+  gui.add(effectController, "hour", 4, 19, 0.05).onChange(guiChanged);
   gui.add(effectController, "day", 1, 30, 1).onChange(guiChanged);
   gui.add(effectController, "month", 1, 12, 1).onChange(guiChanged);
-  const { x, y, z } = sunSphere.position;
   guiChanged();
 }
 
