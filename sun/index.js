@@ -37,7 +37,7 @@ function initSky() {
     inclination: 0.49, // elevation / inclination
     azimuth: 0.25, // Facing front,
     sun: !true,
-    hour: 4,
+    hour: 7,
     day: 5,
     month: 1,
   };
@@ -50,9 +50,34 @@ function initSky() {
     changedTime.setMonth(Math.floor(month) - 1);
     changedTime.setDate(Math.floor(day));
 
-    const minutes = Math.ceil((hour % 2) * 60);
-    changedTime.setMinutes(minutes);
+    // const minutes = Math.ceil((hour % 2) * 60);
+    // changedTime.setMinutes(minutes);
     return changedTime;
+  }
+
+  function getSunLocation(
+    time = new Date(),
+    userLocation = { x: 31, y: 30.5 }
+  ) {
+    const { azimuth, altitude } = SunCalc.getPosition(
+      time,
+      userLocation.x,
+      userLocation.y
+    );
+    return { azimuth, altitude };
+  }
+
+  function calculateSunPosition(distance, sunPosition) {
+    // Need
+    const theta = sunPosition.altitude / (2 * Math.PI);
+    const phi = sunPosition.azimuth / (Math.PI / 2);
+
+    sunSphere.position.x = distance * Math.cos(phi);
+    sunSphere.position.y = distance * Math.sin(phi) * Math.sin(theta);
+    sunSphere.position.z = distance * Math.sin(phi) * Math.cos(theta);
+
+    sunSphere.visible = effectController.sun;
+    return sunSphere.position;
   }
 
   function guiChanged() {
@@ -74,33 +99,13 @@ function initSky() {
     uniforms["mieDirectionalG"].value = mieDirectionalG;
     uniforms["luminance"].value = luminance;
 
-    function getSunLocation(userLocation, time = new Date()) {
-      const Ctime = getTime(hour, day, month);
-      const coord = { x: 31, y: 30.5 }; // use this location for testing (EGYPT)
-      const { azimuth, altitude } = SunCalc.getPosition(
-        Ctime,
-        coord.x,
-        coord.y
-      );
-      console.log("azimuth", azimuth / (2 * Math.PI));
-      console.log("altitude", altitude / (Math.PI / 2));
-      console.log("-------------------------------------------");
-      return { azimuth: azimuth / (2 * Math.PI), altitude:altitude / (Math.PI / 2) };
-    }
-    function calculateSunPosition() {
-      const sunPosition = getSunLocation();
-      var theta = (sunPosition.altitude );
-      var phi = (sunPosition.azimuth);
+    const Ctime = getTime(hour, day, month);
+    const sunPosition = getSunLocation(Ctime);
 
-      sunSphere.position.x = distance * Math.cos(phi);
-      sunSphere.position.y = distance * Math.sin(phi) * Math.sin(theta);
-      sunSphere.position.z = distance * Math.sin(phi) * Math.cos(theta);
+    const sunSpherePosition = calculateSunPosition(distance, sunPosition);
 
-      sunSphere.visible = effectController.sun;
+    uniforms["sunPosition"].value.copy(sunSpherePosition);
 
-      uniforms["sunPosition"].value.copy(sunSphere.position);
-    }
-    calculateSunPosition();
     const { x, y, z } = sunSphere.position;
     updateLightPosition(dirLight, x, y, z);
 
@@ -108,14 +113,6 @@ function initSky() {
   }
 
   var gui = new GUI();
-  // gui.add(effectController, "turbidity", 1.0, 20.0, 0.1).onChange(guiChanged);
-  // gui.add(effectController, "rayleigh", 0.0, 4, 0.001).onChange(guiChanged);
-  // gui.add(effectController, "mieCoefficient", 0.0, 0.1, 0.001).onChange(guiChanged);
-  // gui.add(effectController, "mieDirectionalG", 0.0, 1, 0.001).onChange(guiChanged);
-  // gui.add(effectController, "luminance", 0.0, 2).onChange(guiChanged);
-  // gui.add(effectController, "sun").onChange(guiChanged);
-  // gui.add(effectController, "inclination", 0, 1, 0.0001).onChange(guiChanged);
-  // gui.add(effectController, "azimuth", 0, 1, 0.0001).onChange(guiChanged);
   gui.add(effectController, "hour", 4, 19, 0.05).onChange(guiChanged);
   gui.add(effectController, "day", 1, 30, 1).onChange(guiChanged);
   gui.add(effectController, "month", 1, 12, 1).onChange(guiChanged);
@@ -234,3 +231,25 @@ function illum() {
 function updateLightPosition(light, x, y, z) {
   light.position.set(x / 10000, y / 10000, z / 10000);
 }
+
+function createCoord(x, y, z, color) {
+  const points = [];
+  points.push(new THREE.Vector3(0, 0, 0));
+  points.push(new THREE.Vector3(100 * x, 100 * y, 100 * z));
+  const material = new THREE.LineBasicMaterial({ color });
+  const geometry = new THREE.BufferGeometry()
+    .setFromPoints(points)
+    .scale(2, 2, 2);
+  const line = new THREE.Line(geometry, material);
+  scene.add(line);
+}
+
+function displayCoards() {
+  createCoord(1, 0, 0, 0xff0000);
+  createCoord(0, 1, 0, 0x00ff00);
+  createCoord(0, 0, 1, 0x0000ff);
+}
+displayCoards();
+// x red
+// y green
+// z blue
