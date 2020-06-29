@@ -68,13 +68,19 @@ function initSky() {
   }
 
   function calculateSunPosition(distance, sunPosition) {
-    // Need
-    const theta = sunPosition.altitude / (2 * Math.PI);
-    const phi = sunPosition.azimuth / (Math.PI / 2);
+    // const phi = sunPosition.azimuth ;
+    // const theta = sunPosition.altitude;
+    const alt = sunPosition.altitude
+    const azi = sunPosition.azimuth
+
+    var theta =  alt - Math.PI/ 2;
+    var phi = azi- Math.PI;
 
     sunSphere.position.x = distance * Math.cos(phi);
     sunSphere.position.y = distance * Math.sin(phi) * Math.sin(theta);
     sunSphere.position.z = distance * Math.sin(phi) * Math.cos(theta);
+
+
 
     sunSphere.visible = effectController.sun;
     return sunSphere.position;
