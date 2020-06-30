@@ -74,21 +74,9 @@ function initSky() {
   function calculateSunPosition(distance, sunPosition) {
     // phi - polar angle in radians from the y (up) axis. Default is 0.  [0-PI]
     // theta - equator angle in radians around the y (up) axis. Default is 0. [0-2PI]
-
-    const  phi= sunPosition.altitude;
-    const theta = sunPosition.azimuth ;
-    console.log(phi, theta)
-
-    const alt = sunPosition.altitude;
-    const azi = sunPosition.azimuth;
-
-    // var phi = alt - Math.PI / 2;
-    // var  theta= azi - Math.PI;
-
-    // const phi = Math.PI / 2;
-    // const theta = 2 * Math.PI - Math.PI;
-    // phi = Math.PI/8
-    // theta= Math.PI/2
+    // Z Axis is the North Pole 
+    const phi = sunPosition.altitude;
+    const theta = -sunPosition.azimuth;
 
     sunSphere.position.y = distance * Math.sin(phi);
     sunSphere.position.z = distance * Math.cos(phi) * Math.cos(theta);
@@ -193,13 +181,13 @@ function createCylender(
   tr = 1.5,
   color = 0xffffff
 ) {
-  const geometry = new THREE.CylinderGeometry(tr, br, 10, 100);
+  const geometry = new THREE.CylinderGeometry(tr, br, 20, 100);
   const material = new THREE.MeshStandardMaterial({ color });
   const cylender = new THREE.Mesh(geometry, material);
   cylender.castShadow = true; //default is false
   cylender.receiveShadow = true;
   cylender.translateX(x);
-  cylender.translateY(5 + y);
+  cylender.translateY(10 + y);
   cylender.translateZ(z);
   scene.add(cylender);
   return cylender;
