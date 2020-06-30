@@ -1,8 +1,8 @@
 // https://threejs.org/docs/#api/en/math/Spherical
 // change those urls to work on production
-import { GUI } from "../node_modules/three/examples/jsm/libs/dat.gui.module.js";
-import { OrbitControls } from "../node_modules/three/examples/jsm/controls/OrbitControls.js";
-import { Sky } from "../node_modules/three/examples/jsm/objects/Sky.js";
+import { GUI } from "./dat.gui.module.js";
+import { OrbitControls } from "./OrbitControls.js";
+import { Sky } from "./Sky.js";
 
 var camera, controls, scene, renderer;
 
