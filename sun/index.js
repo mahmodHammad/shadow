@@ -1,3 +1,4 @@
+// https://threejs.org/docs/#api/en/math/Spherical
 // change those urls to work on production
 import { GUI } from "../node_modules/three/examples/jsm/libs/dat.gui.module.js";
 import { OrbitControls } from "../node_modules/three/examples/jsm/controls/OrbitControls.js";
@@ -42,7 +43,7 @@ function initSky() {
     month: 1,
   };
 
-  var distance = 400000;
+  var distance = 40000;
 
   function getTime(hour, day, month) {
     const changedTime = new Date();
@@ -67,24 +68,38 @@ function initSky() {
     return { azimuth, altitude };
   }
 
+  // UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\
+  //============================================================================->
+  // nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn/
   function calculateSunPosition(distance, sunPosition) {
+    // phi - polar angle in radians from the y (up) axis. Default is 0.  [0-PI]
+    // theta - equator angle in radians around the y (up) axis. Default is 0. [0-2PI]
+
+
     // const phi = sunPosition.azimuth ;
     // const theta = sunPosition.altitude;
-    const alt = sunPosition.altitude
-    const azi = sunPosition.azimuth
 
-    var theta =  alt - Math.PI/ 2;
-    var phi = azi- Math.PI;
+    const alt = sunPosition.altitude;
+    const azi = sunPosition.azimuth;
 
-    sunSphere.position.x = distance * Math.cos(phi);
-    sunSphere.position.y = distance * Math.sin(phi) * Math.sin(theta);
-    sunSphere.position.z = distance * Math.sin(phi) * Math.cos(theta);
+    // var phi = alt - Math.PI / 2;
+    // var  theta= azi - Math.PI;
 
+    const phi = Math.PI/2 
+    const theta = Math.PI/2 - Math.PI
+    // phi = Math.PI/8
+    // theta= Math.PI/2
 
+    sunSphere.position.y = distance *  Math.sin(phi);
+    sunSphere.position.z = distance * Math.cos(phi)*Math.cos(theta);
+    sunSphere.position.x = distance * Math.cos(phi) * Math.sin(theta);
 
     sunSphere.visible = effectController.sun;
     return sunSphere.position;
   }
+  // UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\
+  //============================================================================->
+  // nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn/
 
   function guiChanged() {
     var uniforms = sky.material.uniforms;
@@ -132,7 +147,7 @@ function init() {
     0.1,
     200000
   );
-  camera.position.set(10, 50, 100);
+  camera.position.set(40, 5, -60);
 
   scene = new THREE.Scene();
 
@@ -152,6 +167,8 @@ function init() {
   initSky();
   createFunery();
   illum();
+displayCoards();
+
 
   window.addEventListener("resize", onWindowResize, false);
 }
@@ -255,7 +272,6 @@ function displayCoards() {
   createCoord(0, 1, 0, 0x00ff00);
   createCoord(0, 0, 1, 0x0000ff);
 }
-displayCoards();
 // x red
 // y green
 // z blue
