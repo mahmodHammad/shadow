@@ -47,12 +47,12 @@ function initSky() {
 
   function getTime(hour, day, month) {
     const changedTime = new Date();
+    const minutes = Math.ceil((hour % 2) * 60);
+    changedTime.setMinutes(minutes);
     changedTime.setHours(Math.floor(hour));
     changedTime.setMonth(Math.floor(month) - 1);
     changedTime.setDate(Math.floor(day));
 
-    // const minutes = Math.ceil((hour % 2) * 60);
-    // changedTime.setMinutes(minutes);
     return changedTime;
   }
 
@@ -75,9 +75,9 @@ function initSky() {
     // phi - polar angle in radians from the y (up) axis. Default is 0.  [0-PI]
     // theta - equator angle in radians around the y (up) axis. Default is 0. [0-2PI]
 
-
-    // const phi = sunPosition.azimuth ;
-    // const theta = sunPosition.altitude;
+    const  phi= sunPosition.altitude;
+    const theta = sunPosition.azimuth ;
+    console.log(phi, theta)
 
     const alt = sunPosition.altitude;
     const azi = sunPosition.azimuth;
@@ -85,13 +85,13 @@ function initSky() {
     // var phi = alt - Math.PI / 2;
     // var  theta= azi - Math.PI;
 
-    const phi = Math.PI/2 
-    const theta = Math.PI/2 - Math.PI
+    // const phi = Math.PI / 2;
+    // const theta = 2 * Math.PI - Math.PI;
     // phi = Math.PI/8
     // theta= Math.PI/2
 
-    sunSphere.position.y = distance *  Math.sin(phi);
-    sunSphere.position.z = distance * Math.cos(phi)*Math.cos(theta);
+    sunSphere.position.y = distance * Math.sin(phi);
+    sunSphere.position.z = distance * Math.cos(phi) * Math.cos(theta);
     sunSphere.position.x = distance * Math.cos(phi) * Math.sin(theta);
 
     sunSphere.visible = effectController.sun;
@@ -167,8 +167,7 @@ function init() {
   initSky();
   createFunery();
   illum();
-displayCoards();
-
+  displayCoards();
 
   window.addEventListener("resize", onWindowResize, false);
 }
