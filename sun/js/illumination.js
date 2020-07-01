@@ -1,7 +1,7 @@
 import * as THREE from "../assets/three.module.js";
 import { scene } from "./setup.js";
 var intenisty = 1;
-var dirLight = new THREE.DirectionalLight(0xffffbb, intenisty);
+var dirLight = new THREE.DirectionalLight(0xffffcc, intenisty);
 
 function illum() {
   //  illuminate all objects in the scene equally.
@@ -30,7 +30,7 @@ function illum() {
 function updateLightPosition(light, sunPosition) {
   const { x, y, z } = sunPosition;
   updateLightIntenisty(y);
-  light.position.set(x / 10000, y / 10000, z / 10000);
+  light.position.set(x / 100, y / 100, z / 100);
 }
 
 function updateLightIntenisty(y) {
