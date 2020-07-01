@@ -1,16 +1,11 @@
 // https://threejs.org/docs/#api/en/math/Spherical
-// change those urls to work on production
-import { GUI } from "./dat.gui.module.js";
-import { OrbitControls } from "./OrbitControls.js";
-import { Sky } from "./Sky.js";
+import { GUI } from "../assets/dat.gui.module.js";
+import { OrbitControls } from "../assets/OrbitControls.js";
+import { Sky } from "../assets/Sky.js";
+import * as THREE from "../assets/three.module.js"
 
-var camera, controls, scene, renderer;
-
-var sky, sunSphere;
+var camera, controls, scene, renderer ,sky, sunSphere;;
 var dirLight = new THREE.DirectionalLight(0xffffbb, 1);
-
-init();
-render();
 
 function initSky() {
   // Add Sky
@@ -155,7 +150,7 @@ function init() {
   initSky();
   createFunery();
   illum();
-  displayCoards();
+  // displayCoards();
 
   window.addEventListener("resize", onWindowResize, false);
 }
@@ -262,3 +257,6 @@ function displayCoards() {
 // x red
 // y green
 // z blue
+
+init();
+render();
