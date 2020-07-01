@@ -5,10 +5,7 @@ import { displayCoards, displayPlate, createFunery } from "./geometry.js";
 import { illum, updateLightPosition, dirLight } from "./illumination.js";
 import { initSky } from "./sky.js";
 import { initGUI, animateDay } from "./gui.js";
-
-function render() {
-  renderer.render(scene, camera);
-}
+import { onWindowResize } from "./listeners.js";
 
 const camera = new THREE.PerspectiveCamera(
   60,
@@ -47,4 +44,12 @@ function run() {
   displayCoards(scene);
 }
 
-export { run, scene, render, camera, renderer };
+function listen() {
+  window.addEventListener("resize", onWindowResize, false);
+}
+
+function render() {
+  renderer.render(scene, camera);
+}
+
+export { run, listen, render, scene, camera, renderer };

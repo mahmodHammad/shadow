@@ -1,7 +1,5 @@
-import { onWindowResize } from "./listeners.js";
-import { run, render } from "./setup.js";
+import { run, render, listen } from "./setup.js";
 
 run();
+listen();
 render();
-
-window.addEventListener("resize", onWindowResize, false);
