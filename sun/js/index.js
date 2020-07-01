@@ -2,7 +2,7 @@ import { GUI } from "../assets/dat.gui.module.js";
 import { OrbitControls } from "../assets/OrbitControls.js";
 import { Sky } from "../assets/Sky.js";
 import * as THREE from "../assets/three.module.js";
-import { getTime } from "./helpers.js";
+import { calculateSunPosition, parseDate } from "./helpers.js";
 import { displayCoards, displayPlate, createFunery } from "./geometry.js";
 import { illum, updateLightPosition, dirLight } from "./illumination.js";
 var camera, controls, scene, renderer, sky, sunSphere;
@@ -23,6 +23,7 @@ function initSky() {
   scene.add(sunSphere);
 
   /// GUI
+  const { hour, month, day } = parseDate(new Date());
 
   var effectController = {
     turbidity: 10,
@@ -33,45 +34,10 @@ function initSky() {
     inclination: 0.49, // elevation / inclination
     azimuth: 0.25, // Facing front,
     sun: !true,
-    hour: 7,
-    day: 5,
-    month: 1,
+    hour,
+    day,
+    month,
   };
-
-  var distance = 40000;
-
-  function getSunLocation(
-    time = new Date(),
-    userLocation = { x: 31, y: 30.5 }
-  ) {
-    const { azimuth, altitude } = SunCalc.getPosition(
-      time,
-      userLocation.x,
-      userLocation.y
-    );
-    return { azimuth, altitude };
-  }
-
-  // UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\
-  //============================================================================->
-  // nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn/
-  function calculateSunPosition(distance, sunPosition) {
-    // phi - polar angle in radians from the y (up) axis. Default is 0.  [0-PI]
-    // theta - equator angle in radians around the y (up) axis. Default is 0. [0-2PI]
-    // Z Axis is the North Pole
-    const phi = sunPosition.altitude;
-    const theta = -sunPosition.azimuth;
-
-    sunSphere.position.y = distance * Math.sin(phi);
-    sunSphere.position.z = distance * Math.cos(phi) * Math.cos(theta);
-    sunSphere.position.x = distance * Math.cos(phi) * Math.sin(theta);
-
-    sunSphere.visible = effectController.sun;
-    return sunSphere.position;
-  }
-  // UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\
-  //============================================================================->
-  // nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn/
 
   function guiChanged() {
     var uniforms = sky.material.uniforms;
@@ -92,14 +58,14 @@ function initSky() {
     uniforms["mieDirectionalG"].value = mieDirectionalG;
     uniforms["luminance"].value = luminance;
 
-    const Ctime = getTime(hour, day, month);
-    const sunPosition = getSunLocation(Ctime);
-
-    const sunSpherePosition = calculateSunPosition(distance, sunPosition);
+    
+    const time = { hour, day, month };
+    const sunSpherePosition = calculateSunPosition(time);
+    sunSphere.visible = effectController.sun;
 
     uniforms["sunPosition"].value.copy(sunSpherePosition);
 
-    updateLightPosition(dirLight, sunSphere.position);
+    updateLightPosition(dirLight, sunSpherePosition);
 
     renderer.render(scene, camera);
   }
@@ -138,7 +104,10 @@ function init() {
   initSky();
   createFunery();
   illum();
-  updateLightPosition(dirLight, sunSphere.position);
+
+  const time = parseDate(new Date());
+  const sunSpherePosition = calculateSunPosition(time);
+  updateLightPosition(dirLight, sunSpherePosition);
 
   displayCoards(scene);
 
