@@ -32,7 +32,7 @@ function calculateSunPosition(time, distance = 40000) {
 
 function getSunLocation(time, userLocation = { x: 31, y: 30.5 }) {
   const CurrentTime = getTime(time);
-
+  
   const { azimuth, altitude } = SunCalc.getPosition(
     CurrentTime,
     userLocation.x,
@@ -42,7 +42,8 @@ function getSunLocation(time, userLocation = { x: 31, y: 30.5 }) {
 }
 
 function parseDate(date) {
-  const hour = date.getHours();
+  // const hour = date.getHours();
+  const hour = 7;
   const month = date.getMonth();
   const day = date.getDate();
   return { hour, month, day };

@@ -62,5 +62,35 @@ const sunSphere = new THREE.Mesh(
 sunSphere.position.y = -700000;
 sunSphere.visible = false;
 
+// POLES---------------------------------------------------------------------
+const loader = new THREE.FontLoader();
+
+loader.load( "./assets/gentilis_regular.typeface.json",   font => {
+	var geometry = new THREE.TextGeometry( 'N', {
+		font: font,
+		size: 8,
+		height: 3,
+		curveSegments: 12,
+		bevelEnabled: true,
+		bevelThickness: 0,
+		bevelSize: 0,
+		bevelOffset: 0,
+		bevelSegments: 5
+  } );
+ 
+  var textMaterial = new THREE.MeshPhongMaterial( 
+    { color: 0xcccccc, specular: 0xffffff }
+  );
+
+  var mesh = new THREE.Mesh( geometry, textMaterial );
+  mesh.castShadow = true; //default is false
+  mesh.receiveShadow = true;
+  mesh.translateX(0);
+  mesh.translateY(0);
+  mesh.translateZ(20);
+  mesh.rotateX(1.5*Math.PI)
+  mesh.rotateZ(Math.PI)
+  scene.add( mesh );
+} );
 
 export { displayCoards, displayPlate, createFunery ,sunSphere };
