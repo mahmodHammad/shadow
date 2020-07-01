@@ -1,4 +1,4 @@
-import { Sky } from "../assets/SKY.js";
+import { Sky } from "../assets/skyView.js";
 import { sunSphere } from "./geometry.js";
 import { scene } from "./setup.js";
 
