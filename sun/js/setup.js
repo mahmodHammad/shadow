@@ -42,7 +42,7 @@ function run() {
 
   updateLightPosition(dirLight, sunSpherePosition);
 
-  displayCoards(scene);
+  // displayCoards(scene);
 }
 
 function listen() {

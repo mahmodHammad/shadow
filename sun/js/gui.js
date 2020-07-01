@@ -12,8 +12,8 @@ var timeCtr = {
 };
 
 function animateDay() {
-  setInterval(() => {
-    timeCtr.hour = timeCtr.hour + 0.05;
+ return setInterval(() => {
+    timeCtr.hour = timeCtr.hour + 0.03;
     const sunSpherePosition = calculateSunPosition(timeCtr);
     const { uniforms } = sky.material;
     uniforms["sunPosition"].value.copy(sunSpherePosition);
