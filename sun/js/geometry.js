@@ -1,5 +1,5 @@
 import * as THREE from "../assets/three.module.js";
-import { scene } from "./setup.js";
+import { scene , render } from "./setup.js";
 
 function displayCoards() {
   // x red
@@ -74,7 +74,7 @@ loader.load("./assets/gentilis_regular.typeface.json", (font) => {
   const fontAttributes = {
     font: font,
     size: 5,
-    height: 2,
+    height: 1,
     curveSegments: 12,
     bevelEnabled: true,
     bevelThickness: 0,
@@ -86,7 +86,7 @@ loader.load("./assets/gentilis_regular.typeface.json", (font) => {
   function ceatePole(name,x, y, z) {
     const geometry = new THREE.TextGeometry(name, fontAttributes);
     const pole = new THREE.Mesh(geometry, textMaterial);
-    // pole.castShadow = true;
+    pole.castShadow = true;
     pole.receiveShadow = true;
 
     pole.translateX(32 * x + 2);
@@ -105,6 +105,7 @@ loader.load("./assets/gentilis_regular.typeface.json", (font) => {
   scene.add(east);
   scene.add(west);
   scene.add(south);
+  render()
 
 });
 
