@@ -1,11 +1,11 @@
-// https://threejs.org/docs/#api/en/math/Spherical
 import { GUI } from "../assets/dat.gui.module.js";
 import { OrbitControls } from "../assets/OrbitControls.js";
 import { Sky } from "../assets/Sky.js";
-import * as THREE from "../assets/three.module.js"
-
-var camera, controls, scene, renderer ,sky, sunSphere;;
-var dirLight = new THREE.DirectionalLight(0xffffbb, 1);
+import * as THREE from "../assets/three.module.js";
+import { getTime } from "./helpers.js";
+import { displayCoards, displayPlate, createFunery } from "./geometry.js";
+import { illum, updateLightPosition, dirLight } from "./illumination.js";
+var camera, controls, scene, renderer, sky, sunSphere;
 
 function initSky() {
   // Add Sky
@@ -40,17 +40,6 @@ function initSky() {
 
   var distance = 40000;
 
-  function getTime(hour, day, month) {
-    const changedTime = new Date();
-    const minutes = Math.ceil((hour % 2) * 60);
-    changedTime.setMinutes(minutes);
-    changedTime.setHours(Math.floor(hour));
-    changedTime.setMonth(Math.floor(month) - 1);
-    changedTime.setDate(Math.floor(day));
-
-    return changedTime;
-  }
-
   function getSunLocation(
     time = new Date(),
     userLocation = { x: 31, y: 30.5 }
@@ -69,7 +58,7 @@ function initSky() {
   function calculateSunPosition(distance, sunPosition) {
     // phi - polar angle in radians from the y (up) axis. Default is 0.  [0-PI]
     // theta - equator angle in radians around the y (up) axis. Default is 0. [0-2PI]
-    // Z Axis is the North Pole 
+    // Z Axis is the North Pole
     const phi = sunPosition.altitude;
     const theta = -sunPosition.azimuth;
 
@@ -110,8 +99,7 @@ function initSky() {
 
     uniforms["sunPosition"].value.copy(sunSpherePosition);
 
-    const { x, y, z } = sunSphere.position;
-    updateLightPosition(dirLight, x, y, z);
+    updateLightPosition(dirLight, sunSphere.position);
 
     renderer.render(scene, camera);
   }
@@ -150,7 +138,9 @@ function init() {
   initSky();
   createFunery();
   illum();
-  // displayCoards();
+  updateLightPosition(dirLight, sunSphere.position);
+
+  displayCoards(scene);
 
   window.addEventListener("resize", onWindowResize, false);
 }
@@ -168,95 +158,9 @@ function render() {
   renderer.render(scene, camera);
 }
 
-function createCylender(
-  x = 0,
-  y = 0,
-  z = 0,
-  br = 1,
-  tr = 1.5,
-  color = 0xffffff
-) {
-  const geometry = new THREE.CylinderGeometry(tr, br, 20, 100);
-  const material = new THREE.MeshStandardMaterial({ color });
-  const cylender = new THREE.Mesh(geometry, material);
-  cylender.castShadow = true; //default is false
-  cylender.receiveShadow = true;
-  cylender.translateX(x);
-  cylender.translateY(10 + y);
-  cylender.translateZ(z);
-  scene.add(cylender);
-  return cylender;
-}
-
-function createFunery() {
-  createCylender(0, 0, 0);
-}
-
 //  illuminate all objects in the scene equally.
-
-function displayPlate() {
-  const planeGeometry = new THREE.PlaneBufferGeometry(2000, 2000);
-  planeGeometry.rotateX(-Math.PI / 2);
-  const planeMaterial = new THREE.ShadowMaterial();
-  planeMaterial.opacity = 1;
-  const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-  plane.receiveShadow = true;
-  scene.add(plane);
-}
-
-function illum() {
-  //  illuminate all objects in the scene equally.
-  const illumination = new THREE.AmbientLight(0x1a1a1a);
-  scene.add(illumination);
-
-  dirLight.position.set(-1, 0.75, 1);
-  dirLight.position.multiplyScalar(50);
-  dirLight.name = "dirlight";
-
-  scene.add(dirLight);
-
-  dirLight.castShadow = true;
-  dirLight.shadowMapWidth = dirLight.shadowMapHeight = 1024 * 2;
-
-  var d = 220;
-
-  dirLight.shadowCameraLeft = -d;
-  dirLight.shadowCameraRight = d;
-  dirLight.shadowCameraTop = d;
-  dirLight.shadowCameraBottom = -d;
-
-  dirLight.shadowCameraFar = 3500;
-  dirLight.shadowBias = -0.0001;
-  dirLight.shadowDarkness = 0.35;
-
-  const { x, y, z } = sunSphere.position;
-  updateLightPosition(dirLight, x, y, z);
-}
-
-function updateLightPosition(light, x, y, z) {
-  light.position.set(x / 10000, y / 10000, z / 10000);
-}
-
-function createCoord(x, y, z, color) {
-  const points = [];
-  points.push(new THREE.Vector3(0, 0, 0));
-  points.push(new THREE.Vector3(100 * x, 100 * y, 100 * z));
-  const material = new THREE.LineBasicMaterial({ color });
-  const geometry = new THREE.BufferGeometry()
-    .setFromPoints(points)
-    .scale(2, 2, 2);
-  const line = new THREE.Line(geometry, material);
-  scene.add(line);
-}
-
-function displayCoards() {
-  createCoord(1, 0, 0, 0xff0000);
-  createCoord(0, 1, 0, 0x00ff00);
-  createCoord(0, 0, 1, 0x0000ff);
-}
-// x red
-// y green
-// z blue
 
 init();
 render();
+
+export { scene };
