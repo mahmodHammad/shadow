@@ -39,6 +39,7 @@ function run() {
 
   const time = parseDate(new Date());
   const sunSpherePosition = calculateSunPosition(time);
+
   updateLightPosition(dirLight, sunSpherePosition);
 
   displayCoards(scene);
