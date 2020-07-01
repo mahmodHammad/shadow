@@ -1,4 +1,4 @@
-import { camera, renderer, render } from "./index.js";
+import { camera, renderer, render } from "./setup.js";
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();

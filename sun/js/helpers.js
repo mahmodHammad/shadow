@@ -1,3 +1,6 @@
+// for General Calculations
+import {SunCalc} from "../../suncalc.js"
+
 function getTime(time) {
   const { hour, day, month } = time;
 

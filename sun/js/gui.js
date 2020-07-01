@@ -1,7 +1,7 @@
 import { GUI } from "../assets/dat.gui.module.js";
 import { parseDate, calculateSunPosition } from "./helpers.js";
 import { updateLightPosition, dirLight } from "./illumination.js";
-import { render } from "./index.js";
+import { render } from "./setup.js";
 import { sky } from "./sky.js";
 
 const { hour, month, day } = parseDate(new Date());
@@ -10,6 +10,18 @@ var timeCtr = {
   day,
   month,
 };
+
+function animateDay() {
+  setInterval(() => {
+    timeCtr.hour = timeCtr.hour + 0.05;
+    const sunSpherePosition = calculateSunPosition(timeCtr);
+    const { uniforms } = sky.material;
+    uniforms["sunPosition"].value.copy(sunSpherePosition);
+
+    updateLightPosition(dirLight, sunSpherePosition);
+    render();
+  }, 50);
+}
 
 function guiChanged() {
   const sunSpherePosition = calculateSunPosition(timeCtr);
@@ -27,5 +39,4 @@ function initGUI() {
   gui.add(timeCtr, "month", 1, 12, 1).onChange(guiChanged);
   guiChanged();
 }
-
-export { initGUI };
+export { initGUI, animateDay, timeCtr };

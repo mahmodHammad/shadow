@@ -1,5 +1,5 @@
 import * as THREE from "../assets/three.module.js";
-import { scene } from "./index.js";
+import { scene } from "./setup.js";
 
 function displayCoards() {
   // x red

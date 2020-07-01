@@ -1,7 +1,6 @@
 import { Sky } from "../assets/SKY.js";
-import { GUI } from "../assets/dat.gui.module.js";
 import { sunSphere } from "./geometry.js";
-import { scene, render } from "./index.js";
+import { scene, render } from "./setup.js";
 
 
 const sky = new Sky();
