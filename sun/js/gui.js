@@ -3,11 +3,10 @@ import { parseDate, calculateSunPosition } from "./helpers.js";
 import { updateLightPosition, dirLight } from "./illumination.js";
 import { render } from "./setup.js";
 import { sky } from "./sky.js";
-import {getTime  } from "./helpers.js";
+import { getTime } from "./helpers.js";
 
-
-const UIhour = document.querySelector(".hour")
-const UIminute = document.querySelector(".minute")
+const UIhour = document.querySelector(".hour");
+const UIminute = document.querySelector(".minute");
 
 const { hour, month, day } = parseDate(new Date());
 var timeCtr = {
@@ -16,30 +15,28 @@ var timeCtr = {
   month,
 };
 
-function animateDay() {
- return setInterval(() => {
-    let speed = 0.02
-    timeCtr.hour = timeCtr.hour + speed
-    UIhour.innerHTML = timeCtr.hour 
-    const sunSpherePosition = calculateSunPosition(timeCtr);
-    const { uniforms } = sky.material;
-    uniforms["sunPosition"].value.copy(sunSpherePosition);
+function displayTimeUI() {
+  const time = getTime(timeCtr);
+  UIhour.innerHTML = time.getHours();
+  UIminute.innerHTML = time.getMinutes();
+}
 
-    updateLightPosition(dirLight, sunSpherePosition);
-    render();
-  }, 50);
+function animateDay() {
+  return setInterval(() => {
+    let speed = 0.05;
+    timeCtr.hour = timeCtr.hour + speed;
+    // fix the flickering issue
+    if (timeCtr.hour % 1 < 0.96) {
+      guiChanged()
+    }
+  }, 100);
 }
 
 function guiChanged() {
   const sunSpherePosition = calculateSunPosition(timeCtr);
   const { uniforms } = sky.material;
   uniforms["sunPosition"].value.copy(sunSpherePosition);
-  const time = getTime(timeCtr)
-  UIhour.innerHTML = time.getHours()
-  UIminute.innerHTML = time.getMinutes()
-   
-  
-
+  displayTimeUI();
   updateLightPosition(dirLight, sunSpherePosition);
   render();
 }
