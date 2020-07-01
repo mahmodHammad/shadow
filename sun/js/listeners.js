@@ -1,5 +1,6 @@
 import { camera, renderer, render } from "./setup.js";
 import { animateDay } from "./gui.js";
+
 const runBtn = document.querySelector(".run");
 
 function onWindowResize() {
