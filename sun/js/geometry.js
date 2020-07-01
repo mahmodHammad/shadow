@@ -39,13 +39,13 @@ function createCylender(
   tr = 1.5,
   color = 0xffffff
 ) {
-  const geometry = new THREE.CylinderGeometry(tr, br, 20, 100);
+  const geometry = new THREE.CylinderGeometry(tr, br, 10, 100);
   const material = new THREE.MeshStandardMaterial({ color });
   const cylender = new THREE.Mesh(geometry, material);
   cylender.castShadow = true; //default is false
   cylender.receiveShadow = true;
   cylender.translateX(x);
-  cylender.translateY(10 + y);
+  cylender.translateY(5 + y);
   cylender.translateZ(z);
   scene.add(cylender);
   return cylender;
@@ -65,32 +65,47 @@ sunSphere.visible = false;
 // POLES---------------------------------------------------------------------
 const loader = new THREE.FontLoader();
 
-loader.load( "./assets/gentilis_regular.typeface.json",   font => {
-	var geometry = new THREE.TextGeometry( 'N', {
-		font: font,
-		size: 8,
-		height: 3,
-		curveSegments: 12,
-		bevelEnabled: true,
-		bevelThickness: 0,
-		bevelSize: 0,
-		bevelOffset: 0,
-		bevelSegments: 5
-  } );
- 
-  var textMaterial = new THREE.MeshPhongMaterial( 
-    { color: 0xcccccc, specular: 0xffffff }
-  );
+loader.load("./assets/gentilis_regular.typeface.json", (font) => {
+  var textMaterial = new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+    specular: 0xD4AF37,
+  });
 
-  var mesh = new THREE.Mesh( geometry, textMaterial );
-  mesh.castShadow = true; //default is false
-  mesh.receiveShadow = true;
-  mesh.translateX(0);
-  mesh.translateY(0);
-  mesh.translateZ(20);
-  mesh.rotateX(1.5*Math.PI)
-  mesh.rotateZ(Math.PI)
-  scene.add( mesh );
-} );
+  const fontAttributes = {
+    font: font,
+    size: 5,
+    height: 2,
+    curveSegments: 12,
+    bevelEnabled: true,
+    bevelThickness: 0,
+    bevelSize: 0,
+    bevelOffset: 0,
+    bevelSegments: 5,
+  };
 
-export { displayCoards, displayPlate, createFunery ,sunSphere };
+  function ceatePole(name,x, y, z) {
+    const geometry = new THREE.TextGeometry(name, fontAttributes);
+    const pole = new THREE.Mesh(geometry, textMaterial);
+    // pole.castShadow = true;
+    pole.receiveShadow = true;
+
+    pole.translateX(32 * x + 2);
+    pole.translateY(30 * y);
+    pole.translateZ(30 * z - 2);
+    pole.rotateX(1.5 * Math.PI);
+    pole.rotateZ(Math.PI);
+    return pole;
+  }
+  const north = ceatePole("N",0, 0, 1);
+  const east = ceatePole("E",-1, 0, 0);
+  const west = ceatePole("W",1, 0, 0);
+  const south = ceatePole("S",0, 0, -1);
+
+  scene.add(north);
+  scene.add(east);
+  scene.add(west);
+  scene.add(south);
+
+});
+
+export { displayCoards, displayPlate, createFunery, sunSphere };
