@@ -55,4 +55,12 @@ function createFunery() {
   createCylender(0, 0, 0);
 }
 
-export { displayCoards, displayPlate, createFunery };
+const sunSphere = new THREE.Mesh(
+  new THREE.SphereBufferGeometry(20000, 16, 8),
+  new THREE.MeshBasicMaterial({ color: 0xffffff })
+);
+sunSphere.position.y = -700000;
+sunSphere.visible = false;
+
+
+export { displayCoards, displayPlate, createFunery ,sunSphere };
