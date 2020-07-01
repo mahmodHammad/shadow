@@ -5,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <title>Shadow</title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-171504202-1"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-171504202-1");
+    </script>
   </head>
   <body>
     <div class="root">
@@ -20,7 +34,7 @@
       <div class="view">
         <div class="pole">N</div>
         <div class="point user"></div>
-        <div class="shadow point ">
+        <div class="shadow point">
           <div class="real-shadow"></div>
         </div>
       </div>
@@ -37,7 +51,7 @@
         <time class="time"> test</time> <button class="reset">reset</button>
         <br />
         <div class="slider-container">
-          Time: &nbsp; 
+          Time: &nbsp;
           <input
             type="range"
             min="0"
@@ -49,7 +63,7 @@
           <span class="timeLable"></span>
         </div>
         <div class="slider-container">
-          Day:&nbsp; &nbsp;&nbsp; 
+          Day:&nbsp; &nbsp;&nbsp;
           <input
             type="range"
             min="1"
