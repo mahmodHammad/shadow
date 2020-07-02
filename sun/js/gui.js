@@ -14,6 +14,7 @@ var timeCtr = {
   hour,
   day,
   month,
+  animation_speed:0.04
 };
 
 function toTime(digit){
@@ -39,18 +40,17 @@ function displayTimeUI() {
 
 function animateDay() {
   return setInterval(() => {
-    let speed = 0.05;
-    timeCtr.hour = timeCtr.hour + speed;
+    
+    timeCtr.hour = timeCtr.hour + timeCtr.animation_speed;
     // fix the flickering issue
     if (timeCtr.hour % 1 < 0.96) {
       guiChanged();
     }
-  }, 100);
+  }, 50);
 }
 
 function guiChanged() {
   const sunSpherePosition = calculateSunPosition(timeCtr);
-
   uniforms["sunPosition"].value.copy(sunSpherePosition);
   displayTimeUI();
   updateLightPosition(dirLight, sunSpherePosition);
@@ -62,6 +62,7 @@ function initGUI() {
   gui.add(timeCtr, "hour", 4, 19, 0.05).onChange(guiChanged);
   gui.add(timeCtr, "day", 1, 30, 1).onChange(guiChanged);
   gui.add(timeCtr, "month", 1, 12, 1).onChange(guiChanged);
+  gui.add(timeCtr, "animation_speed", 0.01, 1, 0.01).onChange(guiChanged);
   guiChanged();
 }
 export { initGUI, animateDay, timeCtr };
