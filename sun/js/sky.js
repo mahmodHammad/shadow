@@ -17,4 +17,4 @@ function initSky() {
   scene.add(sunSphere);
 }
 
-export { initSky, sky };
+export { initSky, uniforms };
