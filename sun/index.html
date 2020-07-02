@@ -19,7 +19,14 @@
     </script>
 
     <link rel="icon" href="favicon.ico" />
-
+  </head>
+  <body>
+    <button class="run">Run</button>
+    <div class="date">
+      <span class="hour">12</span> <span class="time">:</span>
+      <span class="minute">40</span>
+      <span class="time-label"></span>
+    </div>
     <style>
       body {
         margin: 0;
@@ -27,9 +34,42 @@
       canvas {
         display: block;
       }
+      .run {
+        position: absolute;
+        left: 50%;
+        background-color: #fff8;
+        font-size: 15px;
+        padding: 3px 20px;
+        border-color: #aaa;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+      .run:hover {
+        cursor: pointer;
+      }
+      .run:active {
+        border: none;
+      }
+      .date {
+        position: absolute;
+        padding: 5px 20px 10px;
+        border-bottom-right-radius: 20px;
+        background-color: #fffa;
+        font-size: 24px;
+        opacity: 0.6;
+      }
+      .time {
+        margin: 1px;
+        font-size: 30px;
+
+        /* font-weight: bold; */
+      }
+      .time-label{
+        text-transform: capitalize;
+      }
     </style>
-  </head>
-  <body></body>
+  </body>
+  <script></script>
 
   <script type="module" src="./js/index.js"></script>
 </html>

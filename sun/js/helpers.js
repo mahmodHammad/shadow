@@ -10,7 +10,7 @@ function getTime(time) {
   changedTime.setHours(Math.floor(hour));
   changedTime.setMonth(Math.floor(month) - 1);
   changedTime.setDate(Math.floor(day));
-
+changedTime.getHours
   return changedTime;
 }
 
@@ -49,4 +49,4 @@ function parseDate(date) {
   return { hour, month, day };
 }
 
-export { calculateSunPosition, parseDate };
+export { calculateSunPosition, parseDate ,getTime };

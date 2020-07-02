@@ -1,5 +1,5 @@
 import * as THREE from "../assets/three.module.js";
-import { scene , render } from "./setup.js";
+import { scene, render } from "./setup.js";
 
 function displayCoards() {
   // x red
@@ -30,16 +30,16 @@ function displayPlate() {
   plane.receiveShadow = true;
   scene.add(plane);
 }
-
 function createCylender(
   x = 0,
   y = 0,
   z = 0,
   br = 1,
   tr = 1.5,
-  color = 0xffffff
+  color = 0xffdf00,
+  height = 10
 ) {
-  const geometry = new THREE.CylinderGeometry(tr, br, 10, 100);
+  const geometry = new THREE.CylinderGeometry(tr, br, height, 100);
   const material = new THREE.MeshStandardMaterial({ color });
   const cylender = new THREE.Mesh(geometry, material);
   cylender.castShadow = true; //default is false
@@ -51,8 +51,65 @@ function createCylender(
   return cylender;
 }
 
+function createBox(
+  width,
+  height,
+  depth,
+  x = 0,
+  y = 0,
+  z = 0,
+  color = 0xc0c0c0
+) {
+  const geometry = new THREE.BoxGeometry(width, height, depth);
+  const material = new THREE.MeshStandardMaterial({ color });
+  const cylender = new THREE.Mesh(geometry, material);
+  cylender.castShadow = true; //default is false
+  cylender.receiveShadow = true;
+  // cylender.translateX(x);
+  cylender.translateY(height / 2 + y);
+  // cylender.translateZ(z);
+  scene.add(cylender);
+  return cylender;
+}
+
+function createSphere(x = 0, y = 0, z = 0, color = 0xc0c0c0) {
+  var geometry = new THREE.SphereBufferGeometry(3, 32, 32);
+  var material = new THREE.MeshStandardMaterial({ color });
+  var sphere = new THREE.Mesh(geometry, material);
+  sphere.translateX(x);
+  sphere.translateY(4 + y);
+  sphere.translateZ(z);
+  scene.add(sphere);
+}
+
+function createArm(
+  x = 0,
+  y = 0,
+  z = 0,
+  br = 1,
+  tr = 1.5,
+  color = 0xffdf00,
+  height = 20
+) {
+  const geometry = new THREE.CylinderGeometry(tr, br, height, 100);
+  const material = new THREE.MeshStandardMaterial({ color });
+  const cylender = new THREE.Mesh(geometry, material);
+  cylender.castShadow = true; //default is false
+  cylender.receiveShadow = true;
+  cylender.translateX(x);
+  cylender.translateY(5 + y);
+  cylender.translateZ(z);
+  cylender.rotateX(Math.PI / 2);
+  scene.add(cylender);
+  return cylender;
+}
+
 function createFunery() {
-  createCylender(0, 0, 0);
+  // createCylender(0, 0, 0);
+  createCylender(0, 5, 0, 0.5, 1.5, 0xc0c0c0);
+  createBox(4, 12, 9);
+  createSphere(0, 12);
+  createArm(0, 5, 0, 1, 1, 0xc0c0c0);
 }
 
 const sunSphere = new THREE.Mesh(
@@ -68,7 +125,7 @@ const loader = new THREE.FontLoader();
 loader.load("./assets/gentilis_regular.typeface.json", (font) => {
   var textMaterial = new THREE.MeshPhongMaterial({
     color: 0xffffff,
-    specular: 0xD4AF37,
+    specular: 0xd4af37,
   });
 
   const fontAttributes = {
@@ -83,7 +140,7 @@ loader.load("./assets/gentilis_regular.typeface.json", (font) => {
     bevelSegments: 5,
   };
 
-  function ceatePole(name,x, y, z) {
+  function ceatePole(name, x, y, z) {
     const geometry = new THREE.TextGeometry(name, fontAttributes);
     const pole = new THREE.Mesh(geometry, textMaterial);
     pole.castShadow = true;
@@ -96,17 +153,16 @@ loader.load("./assets/gentilis_regular.typeface.json", (font) => {
     pole.rotateZ(Math.PI);
     return pole;
   }
-  const north = ceatePole("N",0, 0, 1);
-  const east = ceatePole("E",-1, 0, 0);
-  const west = ceatePole("W",1, 0, 0);
-  const south = ceatePole("S",0, 0, -1);
+  const north = ceatePole("N", 0, 0, 1);
+  const east = ceatePole("E", -1, 0, 0);
+  const west = ceatePole("W", 1, 0, 0);
+  const south = ceatePole("S", 0, 0, -1);
 
   scene.add(north);
   scene.add(east);
   scene.add(west);
   scene.add(south);
-  render()
-
+  render();
 });
 
 export { displayCoards, displayPlate, createFunery, sunSphere };
