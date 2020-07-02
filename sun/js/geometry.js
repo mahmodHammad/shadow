@@ -58,7 +58,7 @@ function createBox(
   x = 0,
   y = 0,
   z = 0,
-  color = 0xc0c0c0
+  color = 0xffc0c0
 ) {
   const geometry = new THREE.BoxGeometry(width, height, depth);
   const material = new THREE.MeshStandardMaterial({ color });
@@ -72,7 +72,7 @@ function createBox(
   return cylender;
 }
 
-function createSphere(x = 0, y = 0, z = 0, color = 0xc0c0c0) {
+function createSphere(x = 0, y = 0, z = 0, color = 0xffffff) {
   var geometry = new THREE.SphereBufferGeometry(3, 32, 32);
   var material = new THREE.MeshStandardMaterial({ color });
   var sphere = new THREE.Mesh(geometry, material);
@@ -88,7 +88,7 @@ function createArm(
   z = 0,
   br = 1,
   tr = 1.5,
-  color = 0xffdf00,
+  color = 0xbbffff,
   height = 20
 ) {
   const geometry = new THREE.CylinderGeometry(tr, br, height, 100);
@@ -109,7 +109,7 @@ function createFunery() {
   createCylender(0, 5, 0, 0.5, 1.5, 0xc0c0c0);
   createBox(4, 12, 9);
   createSphere(0, 12);
-  createArm(0, 5, 0, 1, 1, 0xc0c0c0);
+  createArm(0, 5, 0, 1, 1);
 }
 
 const sunSphere = new THREE.Mesh(
