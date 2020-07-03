@@ -165,9 +165,9 @@ SunCalc.getTimes = function (date, lat, lng) {
     return result;
 };
 
-// export as Node module / AMD module / browser variable
+// // export as Node module / AMD module / browser variable
 // if (typeof exports === 'object' && typeof module !== 'undefined') export {SunCalc};
 // else if (typeof define === 'function' && define.amd) define(SunCalc);
 // else window.SunCalc = SunCalc;
-export {SunCalc}
 
+export {SunCalc}

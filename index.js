@@ -1,3 +1,5 @@
+import {SunCalc} from "./suncalc.js"
+
 const board = document.querySelector(".view");
 const shadowContainer = document.querySelector(".shadow");
 const RealShadow = document.querySelector(".real-shadow");

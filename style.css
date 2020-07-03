@@ -126,3 +126,8 @@ body {
    width: 73%;
  } 
 }
+
+a{
+  color: beige;
+  text-transform: capitalize;
+}
