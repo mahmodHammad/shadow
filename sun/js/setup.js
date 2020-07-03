@@ -6,6 +6,9 @@ import { illum, updateLightPosition, dirLight } from "./illumination.js";
 import { initSky } from "./sky.js";
 import { initGUI, animateDay } from "./gui.js";
 import { onWindowResize } from "./listeners.js";
+import {createPoles} from "./poles.js"
+import {createModel} from "./model.js"
+
 
 const camera = new THREE.PerspectiveCamera(
   60,
@@ -35,6 +38,8 @@ function run() {
   initGUI();
   createFunery();
   illum();
+  createPoles()
+  createModel()
   // animateDay()
 
   const time = parseDate(new Date());
