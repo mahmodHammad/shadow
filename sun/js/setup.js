@@ -16,7 +16,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   200000
 );
-camera.position.set(40, 5, -60);
+camera.position.set(0, 10, 15);
 
 const scene = new THREE.Scene();
 
@@ -47,7 +47,7 @@ function run() {
 
   updateLightPosition(dirLight, sunSpherePosition);
 
-  // displayCoards(scene);
+  displayCoards(scene);
 }
 
 function listen() {
