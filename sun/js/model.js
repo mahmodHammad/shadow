@@ -36,11 +36,11 @@ function createModel() {
       test =  "toeL_41"
       test =  "footL_35"
       test =  "shinL_36"
-      if (node.name == UpperHalfLeg ) {
-        // node.rotation.x += Math.PI / 2;
+      if (node.name == LeftKnee ) {
+        node.rotation.x += Math.PI / 8;
       
       }
-         if (node.name == LeftKnee ) {
+         if (node.name == UpperHalfLeg ) {
           console.log("hey you ", node);
           // node.scale.x=2
           // node.scale.y=2
@@ -49,15 +49,17 @@ function createModel() {
           // node.rotation.x += Math.PI / 4;
           // node.rotation.z += Math.PI / 4;
           // node.position.x=10
+          // node.position.x=0
+
           let direction = 1
-          // setInterval(() => {
-          //   // node.position.y += 0.02;
-          //   if(node.rotation.y >Math.PI || node.rotation.y <-Math.PI){
-          //     direction *=-1
-          //   }
-          //   // node.rotation.y += direction*Math.PI/100;
-          //   render()
-          // }, 100);
+          setInterval(() => {
+            // node.position.y += 0.02;
+            if(node.rotation.x >Math.PI || node.rotation.x <Math.PI/2){
+              direction *=-1
+            }
+            node.rotation.x += direction*Math.PI/50;
+            render()
+          }, 50);
 
           // node.position.z=1
         }
