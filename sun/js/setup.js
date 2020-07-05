@@ -41,7 +41,16 @@ function run() {
   createFunery();
   illum();
   // createPoles()
-  createModel()
+  createModel(3)
+  createModel(10)
+  createModel(-3)
+  createModel(-10)
+
+  // createModel(20)
+  // createModel(20)
+  // createModel(20)
+  // createModel(20)
+  // createModel(20)
   // animateDay()
 
   const time = parseDate(new Date());
