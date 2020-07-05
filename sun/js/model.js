@@ -25,10 +25,46 @@ function createModel() {
   modelLoader.load(
     "./assets/model/scene.gltf",
     function (gltf) {
-      console.log(gltf.parser.json.nodes[0].rotation[0]=Math.PI/2)
+      console.log(gltf)
+      console.log(gltf.scene.children[0].children[0].children[0].children[0].children[0].children[0].children[0].children[0])
+      const body = gltf.scene.children[0].children[0].children[0].children[0].children[0].children[0].children[0].children[0]
+      
+      const upperBody = body.children[0].children[0]
+
+      const leg_l = body.children[1]
+      const leg_r = body.children[2]
+      
+      const neck = upperBody.children[0]
+      const head = neck.children[0]
+      const head_sensor = head.children[0]
+
+      const arm_l = upperBody.children[1]
+      const arm_l_bi = arm_l.children[0]
+      const arm_l_elbow = arm_l_bi.children[0]
+
+      const arm_r = upperBody.children[2]
+      const arm_r_bi = arm_r.children[0]
+      const arm_r_elbow = arm_r_bi.children[0]
+
+
+      
+      const sensor = upperBody.children[0]
+
+   
+      // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      //const body =  plevis_55 
+      //*****************************************/
+      //const upperHalf =  spine1_34
+
+      //*****************************************/
+      //const leftLeg =  hipL_38
+      //const body =  plevis_55
+      //const body =  plevis_55
+      //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      // console.log(gltf.parser.json.nodes[0].rotation[0]=Math.PI/2)
       gltf.scene.traverse(function (node) {
         if (node.type == "Bone") {
-          console.log(node);
+          // console.log(node);
         }
         // node.scale.x=1.1
         // node.scale.y=1.1
@@ -38,9 +74,9 @@ function createModel() {
         // node.rotation.y = -Math.PI / 40;
 
  
-      if (node.name == leftArm ) {
-        node.rotation.x += Math.PI / 2;
-      }
+      // if (node.name == leftArm ) {
+      //   node.rotation.x += Math.PI / 2;
+      // }
 
          if (node.name == UpperHalfLeg) {
           console.log("hey you ", node);

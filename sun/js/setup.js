@@ -26,6 +26,8 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
+// renderer.vr.enabled=true
+
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.addEventListener("change", render);
 controls.maxPolarAngle = 3.13 / 2;
@@ -38,7 +40,7 @@ function run() {
   initGUI();
   createFunery();
   illum();
-  createPoles()
+  // createPoles()
   createModel()
   // animateDay()
 
