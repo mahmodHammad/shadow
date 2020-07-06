@@ -14,7 +14,7 @@ function castShadow(gltf) {
 }
 
 function createModel(shift) {
-  let gltf =modelLoader.load(
+  modelLoader.load(
     "./assets/model/scene.gltf",
     function (gltf) {
       // castShadow(gltf);
@@ -56,7 +56,9 @@ function createModel(shift) {
       const hand_r = forearm_r.children[0].children[0];
 
       //+ve , -ve , direction
-      neck.limit = {x:[0.8,-0.14,1],y:[1.4,-1.4 ,1] }
+      neck.rotation.y=-Math.PI/2
+      neck.limit = {x:[0.8,-0.14,1,5000],y:[1,-1 ,1,10],z:[0.5,-0.5 ,1,1000] }
+      upperBody.limit = {x:[1.2,-0.8,1,5],y:[1,-1 ,1,5] }
 
       body.position.x = shift;
       // body.rotation.y = Math.PI / 2;
@@ -64,7 +66,7 @@ function createModel(shift) {
       /////////////////////////////////////////////////////////////////
 
       runAnimation([
-          // body,
+          upperBody,
           neck,
         ]);
   },
@@ -88,7 +90,7 @@ function moveLef(nodes) {
       if(node.rotation[d]>=node.limit[d][0] || node.rotation[d]<=node.limit[d][1]){
         node.limit[d][2]*= -1
       }
-      node.rotation[d] += node.limit[d][2]* Math.PI / 60;
+      node.rotation[d] += node.limit[d][2]* Math.PI / (10*node.limit[d][3]) ;
     })
 
     // e.rotation.y += Math.PI / 170;
@@ -101,6 +103,6 @@ function runAnimation(node) {
     moveLef(node);
 
     render();
-  }, 88);
+  }, 58);
 }
 export { createModel };

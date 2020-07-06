@@ -41,10 +41,10 @@ function run() {
   createFunery();
   illum();
   // createPoles()
-  createModel(3)
-  createModel(10)
-  createModel(-3)
-  createModel(-10)
+  createModel(0)
+  // createModel(10)
+  // createModel(-3)
+  // createModel(-10)
 
   // createModel(20)
   // createModel(20)
