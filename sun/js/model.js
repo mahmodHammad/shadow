@@ -14,14 +14,14 @@ function castShadow(gltf) {
 }
 
 function createModel(shift) {
-  modelLoader.load(
+  let gltf =modelLoader.load(
     "./assets/model/scene.gltf",
     function (gltf) {
       // castShadow(gltf);
       console.log(gltf);
-  
-    scene.add(gltf.scene);
-     
+
+      scene.add(gltf.scene);
+
       const body =
         gltf.scene.children[0].children[0].children[0].children[0].children[0]
           .children[0].children[0].children[0];
@@ -54,35 +54,43 @@ function createModel(shift) {
       const arm_r_elbow = arm_r_bi.children[0];
       const forearm_r = arm_r_elbow.children[0];
       const hand_r = forearm_r.children[0].children[0];
-      
-      
-      body.position.x=shift
-      body.rotation.y=Math.PI/2
-      moveLef([
-        body,
-        upperBody,
-      ])
-      render()
+
+      //+ve , -ve , direction
+      neck.limit = {x:[0.8,-0.14,1],y:[1.4,-1.4 ,1] }
+
+      body.position.x = shift;
+      // body.rotation.y = Math.PI / 2;
+      render();
       /////////////////////////////////////////////////////////////////
 
       runAnimation([
-        // body,
-        upperBody,
-      ]);
-    },
-    undefined,
-    function (error) {
-      console.error(error);
-    }
+          // body,
+          neck,
+        ]);
+  },
+  undefined,
+  function (error) {
+    console.error(error);
+  }
   );
+
 }
 
-function moveLef(node) {
+function moveLef(nodes) {
   // if(node.rotation.x >Math.PI || node.rotation.x <Math.PI/2){
   //   direction *=-1
   // }
-  node.forEach((e) => {
-    e.rotation.y -= Math.PI / 4;
+  nodes.forEach(node => {
+    const directions = Object.keys(node.limit)
+    directions.forEach(d=>{
+      console.log(d)
+      console.log(node.limit[d])
+      if(node.rotation[d]>=node.limit[d][0] || node.rotation[d]<=node.limit[d][1]){
+        node.limit[d][2]*= -1
+      }
+      node.rotation[d] += node.limit[d][2]* Math.PI / 60;
+    })
+
     // e.rotation.y += Math.PI / 170;
     // e.rotation.z += Math.PI / 300;
   });
@@ -90,9 +98,9 @@ function moveLef(node) {
 
 function runAnimation(node) {
   setInterval(() => {
-    // moveLef(node);
+    moveLef(node);
 
     render();
-  }, 111);
+  }, 88);
 }
 export { createModel };
