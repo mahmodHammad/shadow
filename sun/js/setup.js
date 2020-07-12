@@ -37,7 +37,7 @@ function run() {
 
   displayPlate();
   initSky();
-  initGUI();
+  // initGUI();
   createFunery();
   illum();
   // createPoles()
